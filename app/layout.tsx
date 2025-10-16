@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Platformless AI - AI Without the Platform',
     description: 'Trustless. Private. Censorship-Resistant.',
-    images: ['/android-chrome-512x512.png'],
   },
 };
 
