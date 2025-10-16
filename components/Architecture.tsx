@@ -19,7 +19,7 @@ export function Architecture() {
         <div className="max-w-6xl mx-auto">
           <div className="relative bg-background/50 backdrop-blur border border-neutrals-border rounded-lg overflow-hidden hover:border-primary-light/50 transition-colors p-4 md:p-8">
             <Image
-              src="/Fabstir LLM Marketplace Architecture 20250815b.png"
+              src="/Fabstir LLM Marketplace Architecture 20251016a.png"
               alt="Platformless AI Architecture Diagram - showing the flow from user request through GPU processing to settlement"
               width={1920}
               height={1080}
