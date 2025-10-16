@@ -64,11 +64,12 @@ export async function POST(request: NextRequest) {
       timeStyle: 'long',
     });
 
-    const interestLabel = {
+    const interestLabels: Record<string, string> = {
       user: 'User',
       developer: 'Developer',
       'gpu-provider': 'GPU Provider',
-    }[interest] || interest;
+    };
+    const interestLabel = interestLabels[interest as string] || interest;
 
     const mailOptions = {
       from: process.env.SMTP_USER,
