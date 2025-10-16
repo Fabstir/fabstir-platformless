@@ -62,7 +62,7 @@ export function Footer() {
         </div>
 
         <div className="mt-6 pt-6 border-t border-neutrals-border text-center text-sm text-neutrals-copy">
-          <p>Powered by Base L2 • Secured by STARK proofs • Open source</p>
+          <p>Powered by Base/opBNB • Secured by STARK proofs • Open source</p>
         </div>
       </div>
     </footer>

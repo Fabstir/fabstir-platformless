@@ -114,7 +114,7 @@ export function ValueProposition() {
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.8 }}
         >
-          Built by <span className="text-primary-light font-semibold">Fabstir</span>, powered by <span className="text-secondary font-semibold">Base L2</span>, secured by <span className="text-primary font-semibold">STARK proofs</span>.
+          Built by <span className="text-primary-light font-semibold">Fabstir</span>, powered by <span className="text-secondary font-semibold">Base/opBNB</span>, secured by <span className="text-primary font-semibold">STARK proofs</span>.
         </motion.p>
       </div>
     </section>

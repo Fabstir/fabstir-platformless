@@ -33,8 +33,8 @@ export function Architecture() {
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="p-4 rounded-lg bg-background/50 border border-primary/30 hover:border-primary/50 transition-colors text-center">
-              <div className="font-semibold text-primary-content mb-1">Base L2</div>
-              <div className="text-neutrals-copy text-xs">Blockchain</div>
+              <div className="font-semibold text-primary-content mb-1">Base/opBNB</div>
+              <div className="text-neutrals-copy text-xs">Layer 2</div>
             </div>
             <div className="p-4 rounded-lg bg-background/50 border border-primary/30 hover:border-primary/50 transition-colors text-center">
               <div className="font-semibold text-primary-content mb-1">STARK Proofs</div>
