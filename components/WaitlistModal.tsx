@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Turnstile } from '@marsidev/react-turnstile';
+import type { TurnstileInstance } from '@marsidev/react-turnstile';
 
 interface WaitlistModalProps {
   open: boolean;
@@ -27,6 +28,7 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string>('');
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,6 +61,9 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
     } catch (error) {
       console.error('Error submitting waitlist:', error);
       alert('Failed to submit. Please try again or contact support@fabstir.com');
+      // Reset Turnstile widget so user can try again with a new token
+      setTurnstileToken('');
+      turnstileRef.current?.reset();
     } finally {
       setIsSubmitting(false);
     }
@@ -170,6 +175,7 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
             </div>
 
             <Turnstile
+              ref={turnstileRef}
               siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
               onSuccess={setTurnstileToken}
               options={{
