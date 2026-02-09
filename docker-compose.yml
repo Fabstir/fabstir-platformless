@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: fabstir-platformless-dev
+    volumes:
+      - .:/home/developer/dev/Fabstir/fabstir-platformless
+      # Persist node_modules for better performance
+      - node_modules:/home/developer/dev/Fabstir/fabstir-platformless/node_modules
+    ports:
+      - "3000:3000"   # Next.js dev server
+      - "3001:3001"   # Additional dev server
+      - "3002:3002"
+      - "3003:3003"
+      - "4000:4000"
+      - "5000:5000"
+      - "5173:5173"   # Vite dev server
+      - "6006:6006"   # Storybook
+      - "8080:8080"
+      - "9000:9000"
+    stdin_open: true
+    tty: true
+    working_dir: /home/developer/dev/Fabstir/fabstir-platformless
+    command: /bin/bash
+
+volumes:
+  node_modules:

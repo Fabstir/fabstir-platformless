@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, MessageSquare } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Github, FileText } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -34,15 +33,15 @@ export function Footer() {
               <span>GitHub</span>
             </Link>
 
-            <div className="flex items-center gap-2">
-              <span className="text-neutrals-copy flex items-center gap-2">
-                <MessageSquare className="h-5 w-5" />
-                Docs
-              </span>
-              <Badge variant="secondary" className="bg-neutrals-border text-neutrals-copy-light text-xs">
-                Coming Soon
-              </Badge>
-            </div>
+            <Link
+              href="https://www.platformlessai.org/files/PLATFORMLESS_AI_WHITEPAPER.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-neutrals-copy hover:text-primary-light transition-colors group"
+            >
+              <FileText className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span>Whitepaper</span>
+            </Link>
 
             <Link
               href="https://discord.com/invite/xdUJ9cK9vt"
