@@ -177,6 +177,102 @@ The infrastructure is platformless - no company controls it, no middleman extrac
 
 **Bottom Line**: Traditional platforms optimize for convenience and ease of use. Platformless AI optimizes for privacy, censorship-resistance, trustlessness, and true decentralization - without sacrificing competitive pricing.`,
   },
+  {
+    id: "general-6",
+    question: "Can Platformless AI handle images, not just text?",
+    category: "general",
+    answer: `**Yes.** Platformless AI supports image generation, vision understanding, and OCR alongside text inference — all through the same encrypted peer-to-peer channel.
+
+**Image Generation (FLUX.2)**
+
+Hosts can run a **FLUX.2 diffusion model sidecar** alongside their LLM. You can generate images in three ways:
+
+• **Natural language** — The SDK automatically detects image intent from your prompt (e.g. "generate an image of a futuristic cityscape") and routes it to the FLUX.2 sidecar.
+• **OpenAI Images API** — The OpenAI Bridge exposes a standard \`/v1/images/generations\` endpoint. Quality and size parameters map directly to FLUX.2 settings (e.g. \`quality: "hd"\` = 20 inference steps).
+• **Direct API** — Call \`generateImage()\` in the SDK for programmatic control.
+
+**Vision (Florence-2)**
+
+Hosts can run **Florence-2** for image understanding — captioning, visual question answering, and scene analysis. Clients send base64-encoded images using the standard OpenAI vision message format, and the bridge passes them to the host's vision model.
+
+**OCR (PaddleOCR)**
+
+**PaddleOCR** runs host-side to extract text from images, useful for document processing, invoice reading, and screenshot analysis.
+
+**Privacy**: All image data — prompts, generated images, and uploaded images — flows through the same end-to-end encrypted WebSocket channel as text. Hosts process your images but the network cannot observe them in transit.`,
+  },
+  {
+    id: "general-7",
+    question:
+      "Can my company replace its OpenAI or Anthropic API with Platformless AI?",
+    category: "general",
+    answer: `**Yes — with a single config change.** Platformless AI provides two API compatibility bridges that let you swap out centralised AI backends without rewriting your application code.
+
+**Claude Bridge (Anthropic API compatible)**
+
+The Claude Bridge (\`@fabstir/claude-bridge\`) translates the full **Anthropic Messages API** — including streaming SSE events, tool use, and multi-turn conversations — into the protocol's encrypted WebSocket layer. Your existing Anthropic SDK code works by simply changing the \`baseURL\`:
+
+Point your Anthropic client's \`baseURL\` to the bridge endpoint and set \`apiKey\` to any value. The bridge handles authentication via your Ethereum wallet, session creation, host discovery, and end-to-end encryption automatically.
+
+**OpenAI Bridge (Chat Completions API compatible)**
+
+The OpenAI Bridge (\`@fabstir/openai-bridge\`) does the same for the **OpenAI ecosystem**:
+
+• \`/v1/chat/completions\` — Streaming and non-streaming text, plus tool calls
+• \`/v1/images/generations\` — Image generation via FLUX.2
+• \`/v1/responses\` — OpenAI Responses API format
+• \`/v1/models\` — Model listing
+
+Set \`OPENAI_BASE_URL=http://localhost:3457/v1\` and your OpenAI SDK code works unchanged.
+
+**Why switch?**
+
+• **Privacy** — End-to-end encrypted; no intermediary sees your data
+• **No vendor lock-in** — Switch hosts or models without code changes
+• **No rate limits** — Based on availability, not arbitrary caps
+• **Market pricing** — Direct GPU rates without platform markup
+• **Compliance-ready** — Cryptographic guarantees for GDPR and HIPAA scenarios`,
+  },
+  {
+    id: "general-8",
+    question: "Who governs the Platformless AI network?",
+    category: "general",
+    answer: `Platformless AI follows a **progressive decentralisation** roadmap, moving from founder-led bootstrapping to full community governance.
+
+**Current Phase (MVP Bootstrap)**
+
+During the early network, governance is handled by admin keys:
+• Contract upgrades and parameter changes controlled by the founding team
+• Model approval via the \`ModelRegistry\` contract's owner functions
+• Stake slashing for misbehaviour executed by the owner with public evidence
+• All admin actions are recorded on-chain and publicly verifiable — nothing happens in secret
+
+**Next Phase (Multi-Sig)**
+
+Governance transitions to a **multi-signature wallet** with community representatives. No single person can make changes unilaterally.
+
+**Final Phase (Full DAO)**
+
+FAB token holders vote on all protocol decisions:
+• **Model approval and removal** — Community votes to add or delist models
+• **Parameter changes** — Fees, minimum stakes, dispute windows
+• **Contract upgrades** — Protocol improvements
+• **Dispute resolution** — Stake slashing for misbehaving hosts
+• **Treasury allocation** — How network fees are spent
+
+**Model Governance**
+
+The \`ModelRegistry\` smart contract already has community voting functions deployed:
+• Anyone can propose a new model (requires a FAB stake)
+• FAB token holders vote on proposals
+• Passed proposals are executed to add models to the registry
+
+This prevents malicious models, copyright-infringing weights, and impersonation. The voting UI is under development.
+
+**DAO Transition for Slashing**
+
+When the community is ready, the owner calls \`setSlashingAuthority(daoContractAddress)\` to transfer slashing power to the DAO. No contract upgrade is needed — the same function, different caller. This ensures a smooth, non-disruptive handover.`,
+  },
 
   // Users FAQ
   {
@@ -465,6 +561,104 @@ Traditional platforms make onboarding easier but sacrifice privacy, censorship-r
 • Lost funds: Check BaseScan to trace transactions
 
 **The Platformless Support Model**: As a decentralized system, support comes from the community rather than a centralized company. This means peer-to-peer help, open-source transparency, and collective problem-solving. While different from traditional support, it empowers users and eliminates dependence on corporate customer service.`,
+  },
+  {
+    id: "users-6",
+    question:
+      "Can I use my existing AI tools like Claude Code, Cursor, or LangChain?",
+    category: "users",
+    answer: `**Yes.** Platformless AI is designed to work with the tools you already use — no custom clients needed.
+
+**Anthropic-compatible tools (via Claude Bridge)**
+
+The Claude Bridge translates the full Anthropic Messages API into the protocol's encrypted layer. Tools that speak the Anthropic API work out of the box:
+
+• **Claude Code** — Anthropic's autonomous coding agent, validated with all 23 of its tools including file operations (Read, Edit, Write, Glob, Grep), terminal (Bash), web access (WebFetch, WebSearch), and planning tools
+• **Cursor** — AI-powered code editor, connects via the Claude Bridge endpoint
+
+Just point the tool's \`baseURL\` to your local Claude Bridge and it handles host discovery, encryption, and session management automatically.
+
+**OpenAI-compatible tools (via OpenAI Bridge)**
+
+The OpenAI Bridge does the same for the OpenAI Chat Completions API:
+
+• **OpenCode** — Production-validated running GLM-4.7-Flash on decentralised hosts, including image generation
+• **Continue** — Open-source AI coding assistant
+• **LangChain** — AI application framework for building pipelines and agents
+
+Set \`OPENAI_BASE_URL\` to your local bridge endpoint and everything works.
+
+**Agentic AI Support**
+
+Both bridges handle the full **multi-turn tool-use loop** that autonomous agents need:
+• Agent sends a message, model responds with a tool call
+• Bridge translates the model's output into the correct API format
+• Client executes the tool and sends results back
+• Model receives the observation and continues planning
+
+This means AI agents can execute dozens of tool calls per session — reading files, running commands, searching the web, and editing code — all running on decentralised GPU infrastructure.`,
+  },
+  {
+    id: "users-7",
+    question:
+      "Can I build apps that search the web or query my own documents?",
+    category: "users",
+    answer: `**Yes.** Platformless AI supports both web search and retrieval-augmented generation (RAG) as built-in capabilities.
+
+**Web Search**
+
+Hosts can enable web search integration with three supported providers:
+• **Brave Search**
+• **Bing**
+• **DuckDuckGo**
+
+When your AI agent or application needs live information, it can use web search tools through the same encrypted session. This is already validated as part of the agentic AI workflow — Claude Code's WebSearch and WebFetch tools work through the Claude Bridge on decentralised hosts.
+
+**RAG / Vector Search**
+
+For querying your own documents, the SDK provides a \`VectorRAGManager\`:
+
+• **Host-side embeddings** — Your documents are embedded on the host's GPU, so you don't need your own embedding infrastructure
+• **Vector databases on S5** — Embeddings are stored on decentralised storage under your control, encrypted with your keys
+• **Encrypted queries** — RAG queries flow through the same end-to-end encrypted channel as all other inference traffic
+
+This means you can build applications that answer questions from your private knowledge base — contracts, technical docs, support tickets — without sending unencrypted documents to a centralised platform.
+
+**Privacy Advantage**
+
+Unlike centralised RAG services where the platform can see your documents and queries, Platformless AI keeps everything encrypted. The host processes your embeddings and queries but the data is encrypted in transit and at rest on S5. Only you hold the decryption keys.`,
+  },
+  {
+    id: "users-8",
+    question:
+      "How does Platformless AI choose which GPU provider handles my request?",
+    category: "users",
+    answer: `The SDK uses a **weighted scoring algorithm** to rank available hosts, with five selection modes that let you prioritise what matters most.
+
+**How Host Discovery Works**
+
+1. The SDK queries the \`NodeRegistry\` smart contract to find all hosts supporting your chosen model
+2. Each host is scored using four weighted factors
+3. The highest-scoring host is selected for your session
+
+**Scoring Factors**
+
+• **Stake (35% default)** — How much FAB the host has staked; higher stakes signal commitment
+• **Price (30% default)** — Inverse of the host's pricing; lower prices score higher
+• **Uptime (20% default)** — Host availability and reliability
+• **Latency (15% default)** — Network round-trip time; lower is better
+
+**Five Selection Modes**
+
+• **AUTO** — Uses the default balanced weights above. Best for most users.
+• **CHEAPEST** — Shifts to 70% price weight. Prioritises the lowest-cost host, ideal for batch processing or cost-sensitive workloads.
+• **RELIABLE** — Shifts to 50% stake + 40% uptime weight. Prioritises hosts with the most skin in the game and best track record. Good for production applications.
+• **FASTEST** — Shifts to 60% latency weight. Prioritises the lowest-latency host. Best for real-time interactive use.
+• **SPECIFIC** — Bypasses scoring entirely and connects to a host address you specify. Useful if you run your own host or have a trusted provider.
+
+**No Lock-In**
+
+You can change your selection mode per session. Use CHEAPEST for background batch jobs, FASTEST for interactive chat, and RELIABLE for production APIs — all without changing your code beyond a single config option.`,
   },
 
   // Hosting FAQ
@@ -769,6 +963,105 @@ If user claims incorrect processing:
 • 🛡️ Secure (cryptographic proofs + slashing for fraud)
 
 Unlike traditional platforms that take 30-90 days to pay and charge 20-40% fees, Platformless AI settles **immediately** with only a 10% network fee.`,
+  },
+  {
+    id: "hosting-6",
+    question:
+      "Can I host image generation or vision models alongside text?",
+    category: "hosting",
+    answer: `**Yes.** Hosts can run optional service sidecars alongside their main LLM inference engine to offer image generation, vision, and OCR capabilities.
+
+**Image Generation (FLUX.2 Sidecar)**
+
+The **FLUX.2 diffusion model** runs as a sidecar process on your GPU alongside the LLM. When a user requests image generation — either through natural language, the OpenAI Images API, or the direct SDK call — your node routes the request to the FLUX.2 sidecar and returns the generated image through the same encrypted WebSocket channel.
+
+**Vision (Florence-2)**
+
+**Florence-2** handles image understanding tasks — captioning, visual question answering, and scene analysis. When clients send base64-encoded images via the OpenAI vision message format, your node passes them to Florence-2 for processing.
+
+**OCR (PaddleOCR)**
+
+**PaddleOCR** extracts text from images, enabling document processing and screenshot analysis for users.
+
+**Hardware Considerations**
+
+Running sidecars alongside an LLM increases GPU memory usage:
+• **FLUX.2** requires additional VRAM for the diffusion model weights and image tensors
+• **Florence-2** and **PaddleOCR** are lighter but still consume GPU memory
+• A 24GB+ VRAM card (RTX 4090 or A100) is recommended if you want to host multiple services simultaneously
+• With 12GB VRAM, you may need to choose between a larger LLM or running sidecars with a smaller text model
+
+**Earnings Potential**
+
+Offering image generation and vision services differentiates your node from text-only hosts. Image generation jobs typically consume more compute per request, which means higher per-job earnings.`,
+  },
+  {
+    id: "hosting-7",
+    question: "What is RAG hosting and how do I offer it?",
+    category: "hosting",
+    answer: `**RAG (Retrieval-Augmented Generation) hosting** lets your node process user documents and answer questions from their private knowledge bases — a high-value service beyond basic chat.
+
+**How It Works**
+
+Your node runs two additional components:
+
+• **Embeddings model** — Converts user documents into vector embeddings on your GPU. The host handles the compute-intensive embedding process so users don't need their own infrastructure.
+• **Vector database sidecar** — Stores and queries the resulting embeddings. When a user asks a question, your node searches their vector database for relevant document chunks and feeds them as context to the LLM.
+
+**Setup**
+
+RAG hosting is an optional service in the Fabstir Node stack. You enable it in your node configuration alongside your LLM. The SDK's \`VectorRAGManager\` handles the client-side interaction, and your node processes the embedding and retrieval operations.
+
+**Privacy**
+
+All RAG data — documents, embeddings, and queries — flows through the same end-to-end encrypted channel as text inference. User vector databases are stored encrypted on S5 decentralised storage under the user's control. Your node processes the data but does not retain unencrypted copies.
+
+**Earnings Potential**
+
+RAG hosting is a premium service. Enterprise users building AI-powered products — internal knowledge bases, customer support bots, document analysis tools — need reliable RAG infrastructure. Offering this capability positions your node for higher-value workloads compared to simple chat inference. You earn on both the embedding computation and the augmented inference queries.`,
+  },
+  {
+    id: "hosting-8",
+    question: "What happens if a user disputes a job I completed?",
+    category: "hosting",
+    answer: `Platformless AI uses a **two-layer dispute resolution** system designed to protect honest hosts while holding bad actors accountable.
+
+**Layer 1: On-Chain (Automatic, Cryptographic)**
+
+Every session generates an immutable evidence trail stored on-chain and on S5 decentralised storage:
+
+• **proofHash** — Cryptographic fingerprint recorded on-chain
+• **proofCID** — Complete proof data stored on S5
+• **deltaCID** — Incremental computation changes stored on S5
+• **conversationCID** — Full conversation at session completion
+• **signature** — Your ECDSA attestation of the work performed
+
+Anyone can verify your work: download the CID content from S5, hash it, compare to the on-chain proofHash, verify the signature, and count actual tokens vs claimed tokens. Valid proofs are mathematically irrefutable.
+
+**Layer 2: Off-Chain (Human-Judged, DAO-Governed)**
+
+If a user believes they were overcharged or received poor service:
+1. User downloads conversation and proofs using the stored CIDs
+2. User compares claimed tokens vs actual content
+3. User submits a dispute to the DAO with CID evidence
+4. DAO members review the evidence and vote
+5. If the host is found guilty, the DAO calls \`slashStake()\` with a public evidence CID and reason
+
+**Slashing Protections (Safeguards for Hosts)**
+
+The protocol includes strong protections against unfair or abusive slashing:
+
+• **Maximum 50% slash per action** — You cannot lose your entire stake from a single dispute
+• **24-hour cooldown** between slashes on the same host — Prevents rapid-fire attacks
+• **Evidence CID required** — Every slash must include public, verifiable evidence
+• **All slashes emit public events** — Full transparency on the blockchain
+• **Minimum stake floor (100 FAB)** — If a slash would drop you below this, your node auto-unregisters rather than operating in a vulnerable state
+
+**No Fund Lockup**
+
+Sessions always settle or time out — there is no on-chain dispute state that can lock your earnings indefinitely. This is a deliberate design choice to prevent griefing attacks where a malicious user could freeze your funds with a baseless claim.
+
+**Bottom Line**: If you run your node honestly, the cryptographic proofs protect you. Invalid complaints are dismissed because the math doesn't lie.`,
   },
 ];
 
