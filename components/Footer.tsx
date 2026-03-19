@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, FileText } from 'lucide-react';
+import { Github, FileText, ShieldCheck } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -44,6 +44,16 @@ export function Footer() {
             </Link>
 
             <Link
+              href="/files/Platformless_AI_Smart_Contract_Audit_Hacken_March2026.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-neutrals-copy hover:text-primary-light transition-colors group"
+            >
+              <ShieldCheck className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span>Security Audit</span>
+            </Link>
+
+            <Link
               href="https://discord.com/invite/xdUJ9cK9vt"
               target="_blank"
               rel="noopener noreferrer"
@@ -61,7 +71,7 @@ export function Footer() {
         </div>
 
         <div className="mt-6 pt-6 border-t border-neutrals-border text-center text-sm text-neutrals-copy">
-          <p>Powered by Base/opBNB • Secured by STARK proofs • Open source</p>
+          <p>Powered by Base/opBNB • Secured by STARK proofs • Audited by Hacken • Open source</p>
         </div>
       </div>
     </footer>

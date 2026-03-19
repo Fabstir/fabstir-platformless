@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import { ShieldCheck } from 'lucide-react';
 
 export function Architecture() {
   return (
@@ -51,8 +53,22 @@ export function Architecture() {
           </div>
         </div>
 
+        {/* Hacken Security Audit Badge */}
+        <div className="flex justify-center">
+          <Link
+            href="/files/Platformless_AI_Smart_Contract_Audit_Hacken_March2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 rounded-lg bg-background/50 border border-success/30 hover:border-success/50 hover:scale-[1.02] transition-all text-center"
+          >
+            <ShieldCheck className="h-4 w-4 text-success mx-auto mb-1" />
+            <div className="font-semibold text-primary-content mb-1">Hacken Audited</div>
+            <div className="text-neutrals-copy text-xs">Smart Contracts — View Report</div>
+          </Link>
+        </div>
+
         <p className="text-center text-sm text-neutrals-copy">
-          Open source • Verifiable • Trustless
+          Open source • Verifiable • Trustless • Audited
         </p>
       </div>
     </section>
