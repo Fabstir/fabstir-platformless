@@ -273,6 +273,87 @@ This prevents malicious models, copyright-infringing weights, and impersonation.
 
 When the community is ready, the owner calls \`setSlashingAuthority(daoContractAddress)\` to transfer slashing power to the DAO. No contract upgrade is needed — the same function, different caller. This ensures a smooth, non-disruptive handover.`,
   },
+  {
+    id: "general-9",
+    question: "Have the smart contracts been security audited?",
+    category: "general",
+    answer: `**Yes.** Platformless AI's smart contracts have been audited by **Hacken**, one of the leading blockchain security firms.
+
+**Audit Details**:
+
+• **Auditor**: Hacken (hacken.io)
+• **Scope**: Fabstir Marketplace smart contracts — the core contracts that handle session escrow, payment settlement, host staking, and proof verification
+• **Date**: March 2026
+• **Report**: Available publicly as a PDF on this site
+
+**Why This Matters**:
+
+For a protocol whose core value proposition is "we don't trust, we verify," having an independent security audit is essential. The smart contracts handle real funds — user deposits, host payments, staking collateral — so they must be rigorously vetted for vulnerabilities.
+
+**What Was Audited**:
+
+• **JobMarketplace** — Session creation, escrow deposits, proof-based payment settlement, and timeout handling
+• **NodeRegistry** — Host registration, staking, slashing, and pricing
+• **ModelRegistry** — Model governance and approval
+• **ProofSystem** — Signature verification and proof integration
+• **HostEarnings** — Payment accumulation and withdrawal
+
+**Open Source + Audited**:
+
+The contracts are both open source (auditable by anyone on GitHub) and independently audited by a professional security firm. This combination provides the strongest possible assurance — you don't have to take our word for it, and you don't have to audit the code yourself.`,
+  },
+  {
+    id: "general-10",
+    question:
+      "What is multi-agent orchestration and how does the A2A protocol work?",
+    category: "general",
+    answer: `**Multi-agent orchestration** allows complex goals to be broken down into sub-tasks and routed to different AI models — all running on decentralised infrastructure with encrypted inference and on-chain settlement.
+
+**The Problem with Single-Model Inference**
+
+Analysing a quarterly earnings report requires extracting metrics, comparing historical performance, researching market context, and drafting a summary — tasks best handled by different models with different strengths. Single-model inference can't optimally handle this.
+
+**How It Works**
+
+The \`@fabstir/orchestrator\` package decomposes complex goals into **Directed Acyclic Graphs (DAGs)** of sub-tasks:
+
+1. **TaskPlanner** — An LLM-driven planner breaks your goal into typed sub-tasks (analysis, synthesis, research, tool-calling, creative)
+2. **ModelRouter** — Each sub-task is assigned to the optimal model based on task complexity — deep models for tool-calling and synthesis, fast models for research
+3. **TaskQueue** — DAG-aware execution engine respects task dependencies and runs independent tasks in parallel
+4. **ProofCollector** — Accumulates cryptographic proof CIDs across all sub-tasks
+5. **Synthesis** — Results from all sub-tasks are combined into a final answer
+
+**Orchestration Patterns**
+
+Three built-in patterns cover common workflows:
+
+| Pattern | Description | Use Case |
+|---------|-------------|----------|
+| **FanOut** | Execute N sub-tasks in parallel | Independent research queries |
+| **Pipeline** | Sequential execution, each task receives prior output | Multi-step reasoning |
+| **MapReduce** | Parallel map phase, single reduce synthesis | Document analysis |
+
+**Google's Agent-to-Agent (A2A) Protocol**
+
+Platformless AI implements **Google's A2A protocol** (v1.0.0-rc) — an open standard for AI agents to discover, communicate, and collaborate regardless of framework or vendor. Backed by 150+ technology partners and the Linux Foundation.
+
+A2A enables:
+• **Agent Cards** (\`/.well-known/agent.json\`) — Agents advertise their capabilities and skills for automatic discovery
+• **JSON-RPC 2.0** — Standardised task delegation between agents
+• **SSE Streaming** — Real-time progress updates for long-running tasks
+• **Skill-based routing** — Clients discover agents by matching skill tags to requirements
+
+Platformless AI is, to our knowledge, the **first DePIN project to implement the A2A protocol** — bridging decentralised compute infrastructure with the emerging standard for inter-agent communication.
+
+**x402 Micropayments for Inter-Agent Delegation**
+
+When agents delegate tasks to external A2A agents, payment is handled via the **x402 HTTP payment protocol** — gasless USDC micropayments using EIP-3009 \`transferWithAuthorization\`. Budget enforcement ensures spending stays within configured limits.
+
+• **Internal inference** (own hosts): Standard escrow via JobMarketplace
+• **External A2A delegation** (foreign agents): x402 per-request USDC micropayment
+
+**Status**: The orchestrator is functional with 206 passing tests, but the underlying A2A standard is at release candidate status (v1.0.0-rc, ~11 months old). The implementation will track the specification as it matures toward stable 1.0.`,
+  },
 
   // Users FAQ
   {
@@ -389,7 +470,7 @@ Approval process:
     category: "users",
     answer: `Platformless AI offers **competitive market-driven pricing** with transparent, direct costs - no hidden platform markup.
 
-**Current Pricing Comparison** (per 1M tokens, October 2025):
+**Current Pricing Comparison** (per 1M tokens):
 
 **Small Models (1-3B parameters)**:
 
@@ -842,7 +923,7 @@ Payments release **immediately** after proof verification (~2-5 seconds on Base 
     category: "hosting",
     answer: `**Staking is required to become a GPU provider.** This ensures hosts are committed and deters malicious behavior.
 
-**Minimum Stake**: 100 FAB tokens (~$10-20 at current prices)
+**Minimum Stake**: 1000 FAB tokens
 
 **Why Staking is Required**:
 
@@ -855,17 +936,17 @@ Payments release **immediately** after proof verification (~2-5 seconds on Base 
 
 | Stake Amount | Benefits | Risk |
 |--------------|----------|------|
-| **100 FAB** (min) | Can register, basic priority | Standard slashing risk |
-| **500 FAB** | +10% job priority | 5x larger potential loss |
-| **1000 FAB** | +25% job priority, "Verified" badge | 10x larger loss |
-| **5000 FAB** | +50% job priority, featured in UI | Significant capital at risk |
+| **1000 FAB** (min) | Can register, basic priority | Standard slashing risk |
+| **2500 FAB** | +10% job priority | Larger potential loss |
+| **5000 FAB** | +25% job priority, "Verified" badge | Significant capital at risk |
+| **10000 FAB** | +50% job priority, featured in UI | Major capital at risk |
 
 **How to Stake**:
 
 1. **Acquire FAB tokens**: Buy on Uniswap (Base L2)
 2. **Register**:
 \`\`\`bash
-./fabstir-host-cli register --model "Mistral-7B" --stake 100
+./fabstir-host-cli register --model "Mistral-7B" --stake 1000
 \`\`\`
 3. **Tokens Locked**: While you're an active host
 
@@ -877,6 +958,13 @@ Payments release **immediately** after proof verification (~2-5 seconds on Base 
 ❌ Attempt to decrypt user data
 
 **Slashing is RARE** - designed only for malicious actors, not honest mistakes.
+
+**Slashing Safeguards**:
+
+• **Maximum 50% slash per action** — You cannot lose your entire stake from a single dispute
+• **24-hour cooldown** between slashes on the same host
+• **Evidence CID required** — Every slash must include public, verifiable evidence
+• **Minimum stake floor (100 FAB)** — If a slash would drop you below this, your node auto-unregisters
 
 **Unstaking Process**:
 
@@ -891,8 +979,8 @@ Payments release **immediately** after proof verification (~2-5 seconds on Base 
 **Increasing Stake**:
 
 \`\`\`bash
-./fabstir-host-cli stake-more --amount 400
-# Increases from 100 → 500 FAB
+./fabstir-host-cli stake-more --amount 1500
+# Increases from 1000 → 2500 FAB
 \`\`\`
 
 **Where to Get FAB Tokens**:
