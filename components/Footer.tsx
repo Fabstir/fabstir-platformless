@@ -44,7 +44,7 @@ export function Footer() {
             </Link>
 
             <Link
-              href="/files/Platformless_AI_Smart_Contract_Audit_Hacken_March2026.pdf"
+              href="https://hacken.io/audits/fabstir/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-neutrals-copy hover:text-primary-light transition-colors group"

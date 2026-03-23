@@ -56,7 +56,7 @@ export function Architecture() {
         {/* Hacken Security Audit Badge */}
         <div className="flex justify-center">
           <Link
-            href="/files/Platformless_AI_Smart_Contract_Audit_Hacken_March2026.pdf"
+            href="https://hacken.io/audits/fabstir/"
             target="_blank"
             rel="noopener noreferrer"
             className="p-4 rounded-lg bg-background/50 border border-success/30 hover:border-success/50 hover:scale-[1.02] transition-all text-center"
