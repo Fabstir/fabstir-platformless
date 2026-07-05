@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, FileText, ShieldCheck } from 'lucide-react';
+import { Github, FileText, ShieldCheck, Youtube } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -51,6 +51,16 @@ export function Footer() {
             >
               <ShieldCheck className="h-5 w-5 group-hover:scale-110 transition-transform" />
               <span>Security Audit</span>
+            </Link>
+
+            <Link
+              href="https://youtu.be/SlEqSBp5_OU"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-neutrals-copy hover:text-primary-light transition-colors group"
+            >
+              <Youtube className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span>YouTube</span>
             </Link>
 
             <Link
