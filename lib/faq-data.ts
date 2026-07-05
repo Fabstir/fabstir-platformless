@@ -72,7 +72,7 @@ The infrastructure is platformless - no company controls it, no middleman extrac
 
 1. **Discovery Phase**: Browse available models and GPU providers via the SDK. Smart contracts track which providers are online and their pricing.
 
-2. **Payment & Job Creation**: Deposit funds (ETH, USDC, or FAB tokens) into a smart contract escrow. A "job" is created on-chain.
+2. **Payment & Job Creation**: Deposit funds (ETH or USDC) into a smart contract escrow. A "job" is created on-chain.
 
 3. **Encrypted Session Initialization**: Your device generates a unique encryption key for this session using XChaCha20-Poly1305 AEAD.
 
@@ -352,7 +352,55 @@ When agents delegate tasks to external A2A agents, payment is handled via the **
 • **Internal inference** (own hosts): Standard escrow via JobMarketplace
 • **External A2A delegation** (foreign agents): x402 per-request USDC micropayment
 
-**Status**: The orchestrator is functional with 206 passing tests, but the underlying A2A standard is at release candidate status (v1.0.0-rc, ~11 months old). The implementation will track the specification as it matures toward stable 1.0.`,
+**Status**: The orchestrator is functional with 351 passing tests, but the underlying A2A standard is at release candidate status (v1.0.0-rc, ~11 months old). The implementation will track the specification as it matures toward stable 1.0.`,
+  },
+  {
+    id: "general-11",
+    question: "Can Platformless AI generate video, not just images?",
+    category: "general",
+    answer: `**Yes.** Platformless AI supports AI video generation through the same encrypted, on-chain-settled pipeline as text and images.
+
+**LTX 2.3 (via ComfyUI sidecar)**
+
+Hosts can run the **LTX 2.3** video model as a ComfyUI sidecar alongside their LLM. Three generation modes are supported:
+• **Text-to-video** — describe a scene and generate a clip
+• **Image-to-video** — animate a starting image
+• **First-last-frame** — provide a start and end frame and let the model interpolate the motion between them
+
+Resolutions up to **1440p** have been validated, with clips generated and payment settled on-chain on Base Sepolia.
+
+**Provenance & Billing**
+
+• **Pinned-template provenance** — generations use pinned workflow templates with byte-exact binding of the input image, so each output is verifiably tied to its inputs.
+• **Megapixel-frame billing** — you pay for what you render, roughly **$0.04 for an SD 5-second clip up to ~$0.91 for 4K**, with the standard 90/10 host/network split settled automatically.
+
+**AI Video Inside Blender**
+
+A native **Blender 5.x** extension brings generation directly into the Video Sequence Editor with HDR/EXR-native output — so 3D artists can generate and composite AI video without leaving their tool.
+
+**Privacy**: Video prompts, input images, and generated frames flow through the same end-to-end encrypted channel as all other inference.`,
+  },
+  {
+    id: "general-12",
+    question: "What is confidential computing and host-blind inference?",
+    category: "general",
+    answer: `**Confidential computing** adds a hardware-level guarantee that even the GPU host running your inference cannot see your data — a stronger privacy model than end-to-end encryption alone.
+
+**How It Works**
+
+Inference runs inside a **Trusted Execution Environment (TEE)** — an encrypted, isolated region of the machine that the host operator cannot inspect:
+• **CPU TEEs** — Intel TDX or AMD SEV-SNP
+• **GPU** — NVIDIA Confidential Computing (CC) mode, so model weights and activations stay encrypted in GPU memory
+
+The pipeline is **attested**: the host proves cryptographically that your session is running inside a genuine TEE with the expected model before any prompt is sent. Hosts advertise this with a \`tee-attested\` capability, so clients can require it.
+
+**Host-Blind Inference**
+
+With TEE inference the host provides raw compute but is *blind* to the actual work — it cannot read your prompts, your context, or the model's output, even in memory. This closes the one remaining gap in the standard model, where a host necessarily decrypts your prompt in order to run it.
+
+**Status**
+
+Confidential computing is currently a **proof-of-concept**: the software pipeline is complete and validated on CC-mode GPUs, with mock attestation in place while integration with production attestation hardware is finalised. It is not yet the default for general sessions.`,
   },
 
   // Users FAQ
@@ -360,7 +408,7 @@ When agents delegate tasks to external A2A agents, payment is handled via the **
     id: "users-1",
     question: "How do I start using Platformless AI?",
     category: "users",
-    answer: `Platformless AI is currently in **beta**. Here's how to get started once it launches:
+    answer: `Platformless AI is live on the Base Sepolia testnet, with core features validated end-to-end. Here's how to get started:
 
 **Step 1: Get a Crypto Wallet**
 
@@ -418,7 +466,7 @@ npm install @fabstir/sdk-core
 
 See docs at **docs.platformlessai.com** (coming soon) or GitHub README.
 
-**Beta Access**: Join the waitlist on this page. Public beta targets Q1 2026.`,
+**Early Access**: Join the waitlist on this page to be notified about new models, features, and mainnet availability.`,
   },
   {
     id: "users-2",
@@ -426,9 +474,8 @@ See docs at **docs.platformlessai.com** (coming soon) or GitHub README.
     category: "users",
     answer: `Platformless AI supports **open-weight models** in GGUF format that GPU providers choose to host. Unlike closed platforms, model availability is determined by the decentralized marketplace.
 
-**Currently Available (Beta)**:
-• **TinyLlama 1.1B**: Ultra-fast, efficient, good for simple tasks
-• **TinyVicuna 1B**: Similar performance, optimized for chat
+**Currently Available**:
+• **GLM-4.7-Flash**: Production-validated on decentralized hosts, running live through the OpenAI and Claude bridges (including agentic coding tools and image generation)
 
 **Coming Soon (Post-Beta)**:
 
@@ -455,10 +502,11 @@ Approval process:
 3. If approved, model added to registry
 4. Providers can stake and host it
 
-**Future Multi-Modal Support**:
-• Image generation: Stable Diffusion, FLUX
-• Vision models: LLaVA
-• Audio/TTS: Whisper, Bark, Coqui
+**Multi-Modal Support (Available Now)**:
+• Image generation: FLUX.2
+• Vision / image understanding: Florence-2
+• OCR: PaddleOCR
+• Video generation: LTX 2.3
 
 **Why GGUF Format?** Optimized for efficient CPU/GPU inference, supports quantization (4-bit, 5-bit, 8-bit), fast loading, and cross-platform compatibility.
 
@@ -512,7 +560,7 @@ Approval process:
 **Additional Cost Savings**:
 
 • **No Subscriptions**: Pay only for what you use
-• **No Minimums**: Start with any amount
+• **Low Minimums**: Just $0.50 (USDC) or 0.0001 ETH to prevent dust sessions - no large upfront commitment
 • **No Rate Limits**: Based on availability, not arbitrary caps
 • **No API Key Fees**: Wallet-based authentication
 
@@ -741,6 +789,27 @@ Unlike centralised RAG services where the platform can see your documents and qu
 
 You can change your selection mode per session. Use CHEAPEST for background batch jobs, FASTEST for interactive chat, and RELIABLE for production APIs — all without changing your code beyond a single config option.`,
   },
+  {
+    id: "users-9",
+    question: "Can I sponsor sessions so my users don't need their own crypto?",
+    category: "users",
+    answer: `**Yes — via delegated payments ("delegate-pays").** This lets a paying account cover inference costs for other users or agents, so they can use the network without holding funds themselves.
+
+**How It Works**
+
+1. **Pre-approve an allowance** — The payer approves a bounded **USDC** allowance to the payment contract.
+2. **Authorize delegates** — The payer authorizes one or more delegate addresses (your users, agents, or backend services) to spend against that allowance.
+3. **Hard spend ceiling** — Delegates can create and pay for sessions up to the approved limit and no further. The cap is enforced on-chain, so a delegate can never overspend.
+
+**Why It Matters**
+
+This is what lets you build a normal product experience on top of Platformless AI:
+• **SaaS backends** can sponsor inference for end users who never touch a wallet
+• **Agent operators** can fund autonomous agents with a fixed, enforceable budget
+• **Teams** can let members share a single funded account
+
+Delegated payments are **USDC-only** and complement the standard self-pay escrow flow — you choose per session whether the user pays directly or draws on a sponsor's allowance.`,
+  },
 
   // Hosting FAQ
   {
@@ -766,9 +835,9 @@ You can change your selection mode per session. Use CHEAPEST for background batc
 
 1. **Install Fabstir LLM Node**
 \`\`\`bash
-wget https://github.com/Fabstir/releases/fabstir-llm-node-v8.1.2.tar.gz
-sha256sum fabstir-llm-node-v8.1.2.tar.gz
-tar -xzf fabstir-llm-node-v8.1.2.tar.gz
+wget https://github.com/Fabstir/releases/fabstir-llm-node-v8.30.0.tar.gz
+sha256sum fabstir-llm-node-v8.30.0.tar.gz
+tar -xzf fabstir-llm-node-v8.30.0.tar.gz
 cd fabstir-llm-node
 \`\`\`
 
@@ -781,7 +850,7 @@ cd fabstir-llm-node
 
 4. **Register On-Chain**:
 \`\`\`bash
-./fabstir-host-cli register --model "Mistral-7B" --stake 100 --price 150
+./fabstir-host-cli register --model "Mistral-7B" --stake 1000 --price 150
 \`\`\`
 
 5. **Start the Node**:
@@ -900,7 +969,7 @@ Payments release **immediately** after proof verification (~2-5 seconds on Base 
 # Withdraws 50 USDC to your wallet
 \`\`\`
 
-**Payment Tokens**: Accept ETH, USDC, or FAB tokens (configured in your node).
+**Payment Tokens**: Accept ETH or USDC (configured in your node). USDC is the primary payment currency; FAB is used only for staking and governance, not session payments.
 
 **Earnings Example** (Mistral 7B at $0.10 per 1M tokens):
 • 500,000 tokens/day processed
@@ -970,11 +1039,10 @@ Payments release **immediately** after proof verification (~2-5 seconds on Base 
 
 \`\`\`bash
 ./fabstir-host-cli unregister
-# 7-day cooldown period begins
-# After 7 days, stake automatically returned
+# No lock period - stake returned immediately on unregister
 \`\`\`
 
-**Why 7 Days?** Allows time for dispute resolution before funds are released.
+**No Lock-Up**: There's no cooldown period. You can unregister and withdraw your stake at any time.
 
 **Increasing Stake**:
 
@@ -1036,7 +1104,7 @@ If user claims incorrect processing:
 • Invalid proof = no payment + slashing risk
 • Valid proof = you get paid, complaint dismissed
 
-**Multi-Currency Support**: Accept ETH, USDC, or FAB tokens
+**Multi-Currency Support**: Accept ETH or USDC (USDC is the primary payment currency; FAB is for staking and governance, not payments)
 
 **No Chargebacks**: Blockchain payments are irreversible. Once received, it's final.
 
@@ -1150,6 +1218,31 @@ The protocol includes strong protections against unfair or abusive slashing:
 Sessions always settle or time out — there is no on-chain dispute state that can lock your earnings indefinitely. This is a deliberate design choice to prevent griefing attacks where a malicious user could freeze your funds with a baseless claim.
 
 **Bottom Line**: If you run your node honestly, the cryptographic proofs protect you. Invalid complaints are dismissed because the math doesn't lie.`,
+  },
+  {
+    id: "hosting-9",
+    question: "Can I offer GPU video transcoding and streaming as a host?",
+    category: "hosting",
+    answer: `**Yes.** Beyond LLM inference, hosts can monetise their GPU's dedicated video hardware by offering **encrypted video transcoding** and **adaptive streaming**.
+
+**Transcoding (NVENC Sidecar)**
+
+An **NVENC sidecar** transcodes video to **H.264, HEVC, or AV1**. Because NVENC uses your GPU's dedicated encoder blocks, it runs **alongside CUDA inference** — so a single card can earn from **both** AI/LLM jobs and transcoding jobs at the same time (dual revenue).
+
+• **End-to-end encrypted pipeline** — source and output video stay encrypted; the network never sees the content
+• **Capacity-aware load balancing** — jobs are distributed across hosts based on available encode capacity
+• **GOP-level STARK verification** — proofs are generated per group-of-pictures, so transcoding work is verifiable and settles trustlessly, just like inference
+
+**HLS Adaptive Streaming**
+
+Hosts can also serve **HLS adaptive-bitrate streaming**:
+• **fMP4 segments** with **per-segment XChaCha20-Poly1305 encryption**
+• **Free-preview vs. paid segments** — monetise content by encrypting only the paid portion
+• **Client-side M3U8** generation with standard **hls.js** playback
+
+**Earnings Potential**
+
+Video transcoding taps hardware that would otherwise sit idle during inference, so it is largely additive revenue. Streaming and pay-per-segment content open up media-delivery use cases beyond AI — positioning your node as general-purpose GPU infrastructure, not just an inference endpoint.`,
   },
 ];
 
