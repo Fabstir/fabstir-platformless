@@ -54,7 +54,7 @@ export function Footer() {
             </Link>
 
             <Link
-              href="https://youtu.be/SlEqSBp5_OU"
+              href="https://youtu.be/RAEax6IWrUM"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-neutrals-copy hover:text-primary-light transition-colors group"
