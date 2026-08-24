@@ -19,12 +19,12 @@ const steps = [
   {
     icon: Lock,
     title: '1. Encrypt & upload',
-    body: 'Your dataset is sharded and each shard encrypted under its own fresh key on your device, then uploaded to decentralised S5 storage. The pointer is the authorisation — the storage network never holds a key.',
+    body: 'Your dataset is sharded and each shard encrypted under its own fresh key on your device, then uploaded to decentralised S5 storage. The pointer is the authorisation, and the storage network never holds a key.',
   },
   {
     icon: Layers,
     title: '2. Train in slices',
-    body: 'The host verifies every shard against its manifest hash, re-counts your tokens and scans the content before a single GPU cycle is spent — then trains in slices, delivering each encrypted checkpoint to you before it claims payment on-chain.',
+    body: 'The host verifies every shard against its manifest hash, re-counts your tokens and scans the content before a single GPU cycle is spent. It then trains in slices, delivering each encrypted checkpoint to you before it claims payment on-chain.',
   },
   {
     icon: KeyRound,
@@ -42,12 +42,12 @@ const features = [
   {
     icon: Calculator,
     title: 'Counting you can check',
-    body: 'Your client and the host count tokens in two languages and must agree exactly, pinned by a frozen fixture generated from the tokenizer’s own bytes. A false declaration is rejected instead of quietly resizing your escrow.',
+    body: 'Your client and the host count tokens in two languages and must agree exactly, pinned by a frozen fixture generated from the exact tokenizer bytes the template names. A false declaration is rejected instead of quietly resizing your escrow.',
   },
   {
     icon: ShieldCheck,
     title: 'Session-isolated serve-back',
-    body: 'An adapter is staged private to one session, applied only to that session’s requests, and removed when it ends. It is never visible to another session on the same base model, and its key is minted host-side — never taken from the wire.',
+    body: 'An adapter is staged private to one session, applied only to the requests in that session, and removed when it ends. It is never visible to another session on the same base model, and its key is minted host-side, never taken from the wire.',
   },
   {
     icon: FileLock2,
@@ -79,7 +79,7 @@ export function Training() {
           <p className="text-lg text-neutrals-copy-light max-w-4xl mx-auto">
             Every other capability here <em>consumes</em> a model. Fine-tuning{' '}
             <em>produces</em> one. Train a LoRA adapter on your own encrypted
-            dataset — support transcripts, a house style, a proprietary domain —
+            dataset (support transcripts, a house style, a proprietary domain)
             on a rented GPU you don&apos;t own, and walk away with a model only you
             can decrypt.
           </p>
@@ -149,7 +149,7 @@ export function Training() {
                 </h3>
                 <p className="text-sm text-neutrals-copy leading-relaxed">
                   Fine-tuning rides the same escrow, per-slice proofs, dispute
-                  window and 90/10 split as inference — it is just a session with
+                  window and 90/10 split as inference. It is just a session with
                   its own registered model id. Because a slice is a token budget
                   rather than anything language-specific, video LoRA training sits
                   on the identical rails.
@@ -169,8 +169,8 @@ export function Training() {
                   Your corpus is encrypted in transit and at rest, staged files are
                   wiped on every exit path, and the adapter is re-encrypted before
                   it leaves. But the host must decrypt your dataset to train on it.
-                  Confidential computing is the route that closes that window — not
-                  something already in place.
+                  Confidential computing is the route that closes that window,
+                  rather than something already in place.
                 </p>
               </div>
             </div>
