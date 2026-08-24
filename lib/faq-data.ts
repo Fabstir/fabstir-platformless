@@ -403,6 +403,38 @@ With TEE inference the host provides raw compute but is *blind* to the actual wo
 Confidential computing is currently a **proof-of-concept**: the software pipeline is complete and validated on CC-mode GPUs, with mock attestation in place while integration with production attestation hardware is finalised. It is not yet the default for general sessions.`,
   },
 
+  {
+    id: "general-13",
+    question: "Can I train a model on my own private data?",
+    category: "general",
+    answer: `**Yes.** Private fine-tuning is the newest capability on the network — and it flips the usual relationship. Every other capability *consumes* a model; fine-tuning *produces* one.
+
+You submit your own corpus — support transcripts, a house writing style, a proprietary domain — rent a GPU from an independent host, and get back a **LoRA adapter that only you can decrypt**. The value of a fine-tune is precisely that nobody else holds it, so the protocol is built around that.
+
+**How A Training Job Runs**
+
+1. Your dataset is split into shards on your device. Each shard is encrypted under its own fresh key and uploaded to decentralised S5 storage as a capability pointer — possession of the pointer is the authorisation, and the storage network never holds a key.
+2. The host fetches the shards, verifies each one against its manifest hash, re-assembles them, scans the content and independently re-counts the tokens — all before a single GPU cycle is spent.
+3. Training proceeds in slices. Each slice hands you its encrypted checkpoint pointer before the host submits its proof on chain, so money never moves ahead of you holding the artefact.
+4. The finished adapter comes back the same way — sharded, encrypted, and pointed to by a manifest whose hash is bound into the final on-chain attestation.
+
+**You Pay For Work Actually Done**
+
+Settlement is per slice, not per job. A run that dies halfway bills for the slices that completed and nothing more, and cancelling is billed the same way. A job rejected before any GPU work — a token count that does not reconcile, a dataset that fails its content scan, a host that turns out to be busy — settles to zero and frees your deposit rather than stranding it.
+
+**Using The Result**
+
+A finished adapter attaches to an ordinary chat session by pointer. The host verifies it against its manifest hash, stages it private to that one session, and applies it to that session's requests only. It is never visible to another session on the same base model and it is removed when the session ends.
+
+**No New Smart Contracts Were Needed**
+
+Fine-tuning rides the same session-job machinery as inference — the same escrow, the same per-slice proof submission, the same dispute window and 90/10 settlement split — distinguished only by its own registered model id. To the chain, a training job is simply a session that consumes tokens and submits proofs.
+
+**The Honest Caveat**
+
+End-to-end encryption protects your corpus in transit and at rest, staged files are removed on every terminal path and swept at start-up, and the adapter is re-encrypted before it leaves. But the host must decrypt your dataset in order to tokenise and train on it, and shards live on a staging volume for the length of the run. Training has the same trust boundary as inference, applied to a larger and more sensitive input. Confidential computing is the route that closes that window — not a mitigation already in place.`,
+  },
+
   // Users FAQ
   {
     id: "users-1",
@@ -809,6 +841,42 @@ This is what lets you build a normal product experience on top of Platformless A
 • **Teams** can let members share a single funded account
 
 Delegated payments are **USDC-only** and complement the standard self-pay escrow flow — you choose per session whether the user pays directly or draws on a sponsor's allowance.`,
+  },
+
+  {
+    id: "users-10",
+    question: "How do I fine-tune a model on my own data, and how do I use the result?",
+    category: "users",
+    answer: `Fine-tuning runs as a guided wizard in the app. The short version: prepare a dataset, fund an escrow sized by your token count, watch slices complete, then attach the resulting adapter to a chat.
+
+**1. Prepare Your Dataset**
+
+Your training data is a set of text samples. Everything happens locally first — the app shards the file, encrypts each shard under a fresh key, and uploads the shards to S5. Nothing readable leaves your machine.
+
+**2. Declare Your Tokens (This Is The Interesting Part)**
+
+To size the escrow, your client declares how many tokens the dataset represents, and the host independently re-counts before training. The two must agree exactly.
+
+That sounds trivial and is not. Two implementations, in two different languages, have to produce an identical count for arbitrary user text — so both sides count strictly from a frozen fixture generated from the exact tokenizer bytes the training template names. The classic failure it guards against is real: JavaScript strings are UTF-16 while the reference implementation is UTF-8, so a client that walks code units rather than code points diverges on every character outside the Basic Multilingual Plane — which is to say, on every emoji, and on nothing else. A disagreement rejects an honest job, so the parity is measured rather than assumed.
+
+**3. Fund And Run**
+
+Deposit into escrow and the host begins. Training proceeds in slices, and each slice delivers its encrypted checkpoint pointer to you before the host claims payment for it. You can stop at any point and pay only for the slices that finished.
+
+**4. Collect Your Adapter**
+
+The finished LoRA adapter is delivered sharded and encrypted, with its manifest hash bound into the final attestation. You hold the only keys.
+
+**5. Chat With It**
+
+Select the adapter when starting a chat and the host stages it private to that session. A few behaviours are deliberate and worth knowing:
+• The banner stays provisional — it says the adapter was requested and that you will be told if it fails. Judge success on the output.
+• If staging fails, a red banner tells you the chat is answering from the base model instead. You never silently pay for a fine-tune you are not getting, and that notice survives navigating away and back.
+• Reloading a chat that used an adapter will refuse it — you will be asked to start a new chat. Serve-back cannot be resumed across a reload, and the host refuses rather than quietly serving you the base model.
+
+**What It Costs**
+
+Training is billed per token at the price the host registered on-chain, settled slice by slice with the standard 90/10 host/network split. Anything rejected before GPU work begins settles to zero and returns your deposit.`,
   },
 
   // Hosting FAQ
@@ -1243,6 +1311,34 @@ Hosts can also serve **HLS adaptive-bitrate streaming**:
 **Earnings Potential**
 
 Video transcoding taps hardware that would otherwise sit idle during inference, so it is largely additive revenue. Streaming and pay-per-segment content open up media-delivery use cases beyond AI — positioning your node as general-purpose GPU infrastructure, not just an inference endpoint.`,
+  },
+  {
+    id: "hosting-10",
+    question: "Can I earn from AI fine-tuning (training) jobs as a host?",
+    category: "hosting",
+    answer: `**Yes**, and there are two separate ways to earn from it — one needs serious training hardware, the other needs almost nothing.
+
+**Option A: Run Training Jobs**
+
+Your node handles everything on the money and trust path: accept-time validation against the chain, dataset staging and hash verification, the slice loop, proof submission, settlement, and delivery of the encrypted adapter. It never trains.
+
+The training itself runs in a separate trainer sidecar, reached over a Unix domain socket and never exposed to a network. It counts tokens, scans content, and runs the loop — nothing else. That split is deliberate: the process touching money is not the process running arbitrary user data through a GPU.
+
+Requirements are a GPU capable of QLoRA fine-tuning on the pinned base model, the trainer sidecar container, and shared staging and work volumes. Note that enabling training does not, by itself, take your shared GPU permit — only an active training run does, so your node keeps serving other workloads between jobs.
+
+**Option B: Serve Adapters Back (No Training Hardware Needed)**
+
+This is the underrated one. Serving a client's finished adapter back on an inference session needs no GPU beyond what you already run, no training weights, and no sidecar at all. Staging never touches the trainer. A host configured for serve-back stages adapters, advertises it in its capability bundle, and honestly reports that it has no training capacity — while earning from adapter-backed inference sessions on hardware it already owns.
+
+**How You Get Paid**
+
+Exactly as you do for inference. Fine-tuning rides the same session-job machinery — the same escrow, per-slice proof submission, dispute window and 90/10 split — under its own registered model id and your registered price per token. A run that fails midway pays you for the slices you actually completed.
+
+**Your Obligations**
+
+• Datasets are removed on every terminal path and swept at start-up — you hold a client's corpus in clear only for the length of the run, and only on the staging volume.
+• Your token counting must match the pinned tokenizer exactly, or you will reject honest jobs with a count mismatch.
+• Each adapter is staged private to a single session under a key your node mints itself and never accepts from the wire, and it is removed when that session ends. One client's fine-tune is never reachable from another client's session.`,
   },
 ];
 

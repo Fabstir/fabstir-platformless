@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { ValueProposition } from '@/components/ValueProposition';
+import { Training } from '@/components/Training';
 import { FAQ } from '@/components/FAQ';
 import { Architecture } from '@/components/Architecture';
 import { Footer } from '@/components/Footer';
@@ -17,6 +18,7 @@ export default function Home() {
       <Header />
       <Hero onJoinWaitlist={() => setIsWaitlistOpen(true)} />
       <ValueProposition />
+      <Training />
       <FAQ />
       <Architecture />
       <Footer />
