@@ -63,3 +63,7 @@ screenshots/
 temp/
 
 docs/archive/
+*:Zone.Identifier
+*:Zone.Identifier
+Dockerfile.dev
+docker-compose.yml
