@@ -44,7 +44,7 @@ export function FAQ() {
   }, [selectedFAQ]);
 
   return (
-    <section className="py-16 px-4">
+    <section id="faq" className="py-16 px-4">
       <div className="container max-w-7xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center space-y-4">

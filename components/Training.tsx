@@ -61,7 +61,7 @@ export function Training() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section ref={ref} className="py-16 px-4 bg-primary-dark/20">
+    <section id="fine-tuning" ref={ref} className="py-16 px-4 bg-primary-dark/20">
       <div className="container max-w-7xl mx-auto space-y-12">
         {/* Header */}
         <motion.div
@@ -73,7 +73,7 @@ export function Training() {
           <Badge className="bg-secondary/20 text-secondary-light border border-secondary/40">
             New
           </Badge>
-          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary-light via-secondary to-primary bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl font-bold leading-tight bg-gradient-to-r from-primary-light via-secondary to-primary bg-clip-text text-transparent pb-[0.12em]">
             Private Fine-Tuning
           </h2>
           <p className="text-lg text-neutrals-copy-light max-w-4xl mx-auto">

@@ -155,12 +155,30 @@ The design uses Fabstir brand colors from `docs/fabstir_color_profile_1.json`:
 
 ## Sections
 
-1. **Header**: Sticky navigation with logo and links (GitHub, Docs)
-2. **Hero**: Large gradient heading, tagline, and CTA button
-3. **Value Proposition**: Two-column comparison (Traditional vs Platformless)
-4. **FAQ**: Searchable three-column layout with 15 questions
-5. **Architecture**: Visual explanation of how the system works
-6. **Footer**: Social links and attribution
+1. **Header**: Sticky navigation with section links, scroll-spy and a reading-progress bar
+2. **Hero**: Gradient heading, animated peer-to-peer network canvas, CTAs and count-up stats
+3. **Showreel**: The Platformless AI montage video with clickable chapters
+4. **Value Proposition**: Two-column comparison (Traditional vs Platformless)
+5. **Capabilities**: Bento grid of every major feature, linking to its section
+6. **How it works**: Animated nine-step session walkthrough (client, host, Base L2, S5)
+7. **AI video generation**: Blender extension demo with per-mode chapters, before/after sliders, all 13 LTX 2.3 modes and clip pricing
+8. **Agentic AI**: Typing terminal for the OpenAI and Claude bridges, supported tools, API comparison
+9. **Multi-agent orchestration**: Animated task graph (A2A, x402), orchestration patterns
+10. **Private fine-tuning**: Encrypt, train in slices, decrypt your adapter
+11. **Transcoding and streaming**: Animated HLS ladder with free preview and encrypted paid segments
+12. **Security**: Interactive defence-in-depth rings, confidential computing status, moderation, audit
+13. **Hosts**: 90/10 payment split, host-selection weights, staking facts
+14. **Architecture**: Diagram and key technologies
+15. **Roadmap**: Scroll-driven timeline of completed, in-progress and planned phases
+16. **FAQ**: Searchable three-column knowledge base
+17. **Final CTA** and **Footer**
+
+## Videos
+
+Web-ready copies of the source videos live in `public/videos/` (H.264, `+faststart`, well under
+GitHub's 100 MB file limit). They use `preload="none"`, so nothing downloads until a visitor presses
+play or picks a chapter. Posters, chapter thumbnails and before/after frames are WebP stills in
+`public/images/video-modes/`, cropped from the Blender demo.
 
 ## FAQ Content
 

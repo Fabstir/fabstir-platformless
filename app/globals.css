@@ -131,3 +131,65 @@ body {
   background-size: 200% 200%;
   animation: gradient-shift 8s ease infinite;
 }
+
+/* Keep anchored sections clear of the sticky header */
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+/* Faint dot grid used behind feature sections */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(167, 139, 250, 0.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Cursor-following glow for SpotlightCard (vars set from pointer position) */
+.spotlight-glow {
+  background: radial-gradient(
+    420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(139, 92, 246, 0.16),
+    transparent 45%
+  );
+}
+
+/* Travelling dashes on an active diagram edge */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.edge-flow {
+  stroke-dasharray: 6 6;
+  animation: dash-flow 0.9s linear infinite;
+}
+
+@keyframes caret-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  50.01%, 100% {
+    opacity: 0;
+  }
+}
+
+.caret-blink {
+  animation: caret-blink 1s step-end infinite;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient,
+  .bg-gradient-animated,
+  .edge-flow,
+  .caret-blink {
+    animation: none;
+  }
+}

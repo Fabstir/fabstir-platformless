@@ -9,7 +9,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Platformless AI - AI Without the Platform',
-  description: 'Trustless. Private. Censorship-Resistant. Decentralized peer-to-peer network for accessing AI models without trusting a centralized company.',
+  description: 'Trustless. Private. Censorship-Resistant. A peer-to-peer marketplace of independent GPU hosts for encrypted chat, coding agents, image and video generation, streaming and private fine-tuning, settled by smart contracts.',
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
