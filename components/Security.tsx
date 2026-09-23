@@ -46,7 +46,7 @@ const layers: Layer[] = [
     name: 'Signed, STARK-anchored commitments',
     summary: 'The host commits on-chain to the model, input and output it claims.',
     detail:
-      'Your client recomputes the input and output hashes from data it already holds, so a substituted prompt or response is caught by arithmetic. The proof is a commitment, not a re-execution of the model, and we do not call it more than that.',
+      'Your client recomputes the input and output hashes from data it already holds, so a substituted prompt or response is caught by arithmetic. The proof is a commitment, not a re-execution of the model. Proof that the committed model actually ran comes from confidential computing, below.',
     radius: 105,
   },
   {
@@ -62,20 +62,25 @@ const layers: Layer[] = [
     id: 'tee',
     icon: Cpu,
     name: 'Confidential computing',
-    summary: 'Host-blind inference inside Trusted Execution Environments.',
+    summary: 'Model keys released only to a verified confidential VM. Proven on Intel TDX with an NVIDIA H200.',
     detail:
-      'Models ship encrypted and their key is released only to hardware that proves, by remote attestation, what it is running. Weights are decrypted into RAM only, checked against the on-chain hash, and securely erased afterwards.',
+      'Models ship encrypted and the host never holds their key. A key broker releases it only against hardware-signed proof, from both the CPU and the GPU, that the machine is genuine and running approved software. The model is then decrypted only inside a confidential VM whose memory the operator cannot read, and checked against its on-chain hash.',
     radius: 175,
     dashed: true,
   },
 ];
 
+// Whitepaper v1.9, section 8.6 and the confidential computing roadmap.
 const teeStatus = [
-  { done: true, label: 'Attested-model pipeline built, fail-closed, 300+ tests' },
-  { done: true, label: 'Proven end to end in integration on real NVIDIA GPU hardware' },
-  { done: true, label: 'CPU half live on real Intel TDX silicon, in the node binary' },
-  { done: false, label: 'GPU half on confidential-computing GPUs (H100 or H200)' },
+  { done: true, label: 'Attested-model pipeline built and fail-closed throughout, with 300+ tests' },
+  { done: true, label: 'CPU half on real Intel TDX silicon, in the live request path' },
+  { done: true, label: 'GPU half on a real NVIDIA H200: both attestations verified under one challenge, then Qwen3.8-27B decrypted inside the confidential VM and served' },
+  { done: true, label: 'Paid testnet sessions from the app run on the TEE host and settle on-chain, with a proof on S5 matching the on-chain hash' },
+  { done: false, label: 'Route paid sessions to tee-attested hosts automatically (today by hand)' },
+  { done: false, label: 'Bring video-generation weights under the same attested release' },
+  { done: false, label: 'Open question with NVIDIA: whether signed evidence can show confidential-computing mode is on' },
 ];
+const teeDone = teeStatus.filter((item) => item.done).length;
 
 export function Security() {
   const [activeLayer, setActiveLayer] = useState<string>('encryption');
@@ -92,7 +97,7 @@ export function Security() {
             </>
           }
           title="Trust the maths, not a company"
-          description="Encryption protects your data in transit and at rest. Signed commitments and stake keep hosts honest. Confidential computing is the route to hosts that cannot see your data at all. We say plainly where each guarantee ends."
+          description="Encryption protects your data in transit and at rest. Signed commitments and stake keep hosts honest. Confidential computing, now proven on real hardware, is the route to hosts that cannot see your data at all. We say plainly where each guarantee ends."
         />
 
         <div className="grid gap-10 lg:grid-cols-2 items-center">
@@ -189,8 +194,8 @@ export function Security() {
                         <div className="flex flex-wrap items-center gap-2">
                           <h3 className="font-semibold text-foreground">{layer.name}</h3>
                           {layer.dashed && (
-                            <span className="rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-semibold text-primary-light">
-                              Proof of concept
+                            <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-semibold text-success">
+                              Proven on hardware, pre-production
                             </span>
                           )}
                         </div>
@@ -217,16 +222,23 @@ export function Security() {
         {/* TEE status + moderation + audit */}
         <div className="grid gap-6 lg:grid-cols-3">
           <motion.div
-            className="rounded-2xl border border-primary/30 bg-card/70 p-6 backdrop-blur"
+            className="rounded-2xl border border-success/30 bg-card/70 p-6 backdrop-blur lg:col-span-2 lg:row-span-2"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-4 flex items-center justify-between gap-2">
-              <h3 className="font-semibold text-foreground">Confidential computing status</h3>
-              <span className="whitespace-nowrap text-xs text-neutrals-copy tabular-nums">3 of 4</span>
+            <div className="mb-1 flex items-start justify-between gap-2">
+              <h3 className="font-semibold text-foreground">Confidential computing: proven on hardware</h3>
+              <span className="whitespace-nowrap text-xs text-neutrals-copy tabular-nums">
+                {teeDone} of {teeStatus.length}
+              </span>
             </div>
+            <p className="mb-4 text-sm text-neutrals-copy leading-relaxed">
+              On 23 September 2026 the whole path ran on a Phala Cloud confidential VM pairing Intel
+              TDX with an NVIDIA H200. Measurements were recomputed independently before pinning,
+              and a replayed key request was refused.
+            </p>
             <div className="mb-5 flex gap-0.5" aria-hidden="true">
               {teeStatus.map((item, i) => (
                 <motion.span
@@ -240,21 +252,23 @@ export function Security() {
                 />
               ))}
             </div>
-            <ul className="space-y-3">
+            <ul className="grid gap-3 sm:grid-cols-2">
               {teeStatus.map((item) => (
                 <li key={item.label} className="flex items-start gap-2 text-sm">
                   {item.done ? (
                     <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-success" aria-label="Done" />
                   ) : (
-                    <CircleDashed className="h-4 w-4 mt-0.5 shrink-0 text-warning" aria-label="Next milestone" />
+                    <CircleDashed className="h-4 w-4 mt-0.5 shrink-0 text-warning" aria-label="Remaining" />
                   )}
                   <span className={item.done ? 'text-neutrals-copy-light' : 'text-foreground font-medium'}>{item.label}</span>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-xs text-neutrals-copy leading-relaxed">
-              Until the GPU half is proven, we do not claim a root operator cannot read GPU memory.
-              Treat confidential inference as in development, not a production guarantee.
+            <p className="mt-5 text-xs text-neutrals-copy leading-relaxed">
+              Until NVIDIA confirms whether its signed evidence can tell confidential-computing mode
+              on from off, we do not claim a root operator cannot read GPU memory. Confidential
+              inference is proven on the target hardware, but it is not yet the default path or a
+              production guarantee.
             </p>
           </motion.div>
 

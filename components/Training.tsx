@@ -169,8 +169,9 @@ export function Training() {
                   Your corpus is encrypted in transit and at rest, staged files are
                   wiped on every exit path, and the adapter is re-encrypted before
                   it leaves. But the host must decrypt your dataset to train on it.
-                  Confidential computing is the route that closes that window,
-                  rather than something already in place.
+                  Confidential computing, now proven for inference on real hardware,
+                  is the route that closes that window for training too, rather than
+                  something already in place.
                 </p>
               </div>
             </div>

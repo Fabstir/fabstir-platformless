@@ -85,8 +85,8 @@ const capabilities: Capability[] = [
   {
     icon: Cpu,
     title: 'Confidential computing',
-    body: 'Inference inside Trusted Execution Environments, so even the host operator cannot read the prompt or the model weights. The CPU half already runs on real Intel TDX hardware; proving the GPU half is the next milestone.',
-    tag: 'Proof of concept',
+    body: 'The route to host-blind inference. Model keys are released only to a verified confidential VM, and the model is decrypted only inside it. Now proven end to end on Intel TDX with an NVIDIA H200, with paid testnet sessions run on it.',
+    tag: 'Proven on hardware',
     href: '#security',
     className: 'lg:col-span-2',
   },
@@ -100,7 +100,7 @@ const capabilities: Capability[] = [
 const tagStyles: Record<string, string> = {
   New: 'bg-secondary/20 text-secondary-light border-secondary/40',
   Experimental: 'bg-warning/15 text-warning border-warning/40',
-  'Proof of concept': 'bg-primary/20 text-primary-light border-primary/40',
+  'Proven on hardware': 'bg-success/15 text-success border-success/40',
 };
 
 export function Capabilities() {

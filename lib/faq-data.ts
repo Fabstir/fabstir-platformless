@@ -384,23 +384,34 @@ A native **Blender 5.x** extension brings generation directly into the Video Seq
     id: "general-12",
     question: "What is confidential computing and host-blind inference?",
     category: "general",
-    answer: `**Confidential computing** adds a hardware-level guarantee that even the GPU host running your inference cannot see your data — a stronger privacy model than end-to-end encryption alone.
+    answer: `**Confidential computing** is the route to **host-blind inference**: serving a model so that even the operator of the GPU host cannot read your prompt or the model weights. It goes further than end-to-end encryption, which protects your data in transit and at rest but still lets the host you chose decrypt your prompt in memory to run it.
 
 **How It Works**
 
-Inference runs inside a **Trusted Execution Environment (TEE)** — an encrypted, isolated region of the machine that the host operator cannot inspect:
-• **CPU TEEs** — Intel TDX or AMD SEV-SNP
-• **GPU** — NVIDIA Confidential Computing (CC) mode, so model weights and activations stay encrypted in GPU memory
+The model is served from a **Trusted Execution Environment (TEE)**, a confidential VM that pairs a CPU TEE with an NVIDIA GPU in Confidential Computing mode:
 
-The pipeline is **attested**: the host proves cryptographically that your session is running inside a genuine TEE with the expected model before any prompt is sent. Hosts advertise this with a \`tee-attested\` capability, so clients can require it.
+• CPU TEE: Intel TDX or AMD SEV-SNP, which encrypts and integrity-protects the VM's memory
+• GPU: NVIDIA Confidential Computing mode, which NVIDIA designs to protect the PCIe link and GPU memory from the host
 
-**Host-Blind Inference**
+Models are distributed **encrypted**, and the host never holds their key. A separate key broker releases the key only after verifying hardware-signed evidence from both the CPU and the GPU, bound to the same one-time challenge. The model is then decrypted inside the confidential VM and checked against its on-chain hash. Hosts advertise this with a **tee-attested** capability, and the same switch that advertises it also enforces it, so a host cannot claim it without honouring it.
 
-With TEE inference the host provides raw compute but is *blind* to the actual work — it cannot read your prompts, your context, or the model's output, even in memory. This closes the one remaining gap in the standard model, where a host necessarily decrypts your prompt in order to run it.
+**Proven on Real Hardware**
+
+On 23 September 2026 the full path ran on a Phala Cloud confidential VM pairing Intel TDX with an NVIDIA H200. The key broker verified both attestations under one challenge and released the model key, and the open-weight Qwen3.8-27B was decrypted inside the confidential VM and served. The same day, paid testnet sessions from the Platformless AI app ran on that host with on-chain checkpoints and settlement, and a proof published to S5 was fetched from an unrelated machine and matched the hash committed on-chain.
+
+That run establishes three things:
+
+• The model key is released only against hardware-signed proof that the machine is genuine and running approved software
+• The model is decrypted only inside a confidential VM whose memory the operator cannot read
+• The GPU proves its identity, secure boot and debug state to NVIDIA's verification service
+
+**What We Do Not Claim Yet**
+
+We do not yet claim that the operator cannot read GPU memory while the model runs. That depends on the GPU being in confidential-computing mode, and NVIDIA's signed evidence does not currently tell that mode being on apart from off. The question is with NVIDIA.
 
 **Status**
 
-Confidential computing is currently a **proof-of-concept**: the software pipeline is complete and validated on CC-mode GPUs, with mock attestation in place while integration with production attestation hardware is finalised. It is not yet the default for general sessions.`,
+Proven on the target hardware, but not yet a production guarantee. Paid sessions are routed to tee-attested hosts by hand today rather than automatically, and video-generation weights are not yet under the same attested release.`,
   },
 
   {

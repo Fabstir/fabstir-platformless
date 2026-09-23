@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 type Status = 'done' | 'active' | 'planned';
 
-const milestones: { phase: string; title: string; status: Status; items: string }[] = [
+const milestones: { phase: string; title: string; status: Status; statusLabel?: string; items: string }[] = [
   {
     phase: 'Phase 1',
     title: 'Foundation',
@@ -49,7 +49,8 @@ const milestones: { phase: string; title: string; status: Status; items: string 
     phase: 'Security workstream',
     title: 'Confidential computing',
     status: 'active',
-    items: 'Real Intel TDX attestation is live. Next: attestation from confidential-computing NVIDIA GPUs.',
+    statusLabel: 'Proven on hardware',
+    items: 'Proven end to end on Intel TDX with an NVIDIA H200, with paid testnet sessions run on it. Next: automatic routing to attested hosts, video weights under attested release, and an open GPU-evidence question with NVIDIA.',
   },
   {
     phase: 'Training M0',
@@ -104,7 +105,7 @@ export function Roadmap() {
             </>
           }
           title="Built in public, shipped in phases"
-          description="Six of nine phases are complete. Confidential computing and private fine-tuning are in progress, and each one states exactly what is left."
+          description="Six of nine phases are complete. Confidential computing is proven on real hardware and heading for production, private fine-tuning is in progress, and each one states exactly what is left."
         />
 
         <div ref={ref} className="relative md:pb-24">
@@ -146,7 +147,7 @@ export function Roadmap() {
                     transition={{ duration: 0.5 }}
                   >
                     <p className={cn('text-xs font-semibold uppercase tracking-wider', meta.text)}>
-                      {m.phase} · {meta.label}
+                      {m.phase} · {m.statusLabel ?? meta.label}
                     </p>
                     <h3 className="mt-1 text-lg font-bold text-foreground">{m.title}</h3>
                     <p className="mt-1 text-sm text-neutrals-copy leading-relaxed">{m.items}</p>
