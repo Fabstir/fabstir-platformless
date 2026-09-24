@@ -43,20 +43,21 @@ const blenderChapters: VideoChapter[] = [
   { time: 90, label: 'Ingredients (reference sheet)', thumbnail: `${IMG}/ingredients.webp` },
 ];
 
+// The first entry is the tab shown on load.
 const comparisons = [
-  {
-    id: 'restyle',
-    label: 'Restyle',
-    caption: 'A reference still sets the look. Your clip supplies the motion and the camera.',
-    before: { src: `${IMG}/restyle-before.webp`, alt: 'Live-action street shot of a man in a hoodie', label: 'Source clip' },
-    after: { src: `${IMG}/restyle-after.webp`, alt: 'The same shot restyled as a hand-drawn cartoon', label: 'Restyled' },
-  },
   {
     id: 'edit',
     label: 'Edit',
     caption: 'Add, remove or replace something by prompt, and the rest of the frame is preserved.',
     before: { src: `${IMG}/edit-before.webp`, alt: 'A man walking down a narrow sunlit alley', label: 'Source clip' },
     after: { src: `${IMG}/edit-after.webp`, alt: 'The same alley with a golden retriever added in the foreground', label: 'Edited' },
+  },
+  {
+    id: 'restyle',
+    label: 'Restyle',
+    caption: 'A reference still sets the look. Your clip supplies the motion and the camera.',
+    before: { src: `${IMG}/restyle-before.webp`, alt: 'Live-action street shot of a man in a hoodie', label: 'Source clip' },
+    after: { src: `${IMG}/restyle-after.webp`, alt: 'The same shot restyled as a hand-drawn cartoon', label: 'Restyled' },
   },
   {
     id: 'water',
