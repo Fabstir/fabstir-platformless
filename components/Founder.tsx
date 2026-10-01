@@ -41,6 +41,7 @@ export function Founder() {
             <figcaption className="mt-4 text-center">
               <p className="text-xl font-bold text-foreground">Jules Lai</p>
               <p className="text-sm text-neutrals-copy">Founder and CTO, Fabstir</p>
+              <p className="mt-1 text-xs text-neutrals-copy">Legal name: Julian Bushell</p>
             </figcaption>
           </motion.figure>
 
@@ -66,8 +67,8 @@ export function Founder() {
               <p>
                 Jules also brings over 20 years in the film business, having established two of the
                 UK&apos;s largest film industry networks, Non-Multiplex Cinema and Film Means Business.
-                Fabstir began as decentralised
-                infrastructure for film and music before it grew into Platformless AI.
+                Fabstir began as decentralised infrastructure for film and music before it grew into
+                Platformless AI.
               </p>
             </div>
 
@@ -85,6 +86,12 @@ export function Founder() {
                 </li>
               ))}
             </ul>
+
+            <p className="text-sm leading-relaxed text-neutrals-copy">
+              Jules Lai is the professional name used for Fabstir and Platformless AI. The Deloitte
+              role, both degrees and the earlier film work are on record under the legal name,
+              Julian Bushell.
+            </p>
           </motion.div>
         </div>
       </div>
