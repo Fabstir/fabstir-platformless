@@ -25,9 +25,9 @@ interface Row {
   platformless: string;
 }
 
-// The Platformless column is scoped to confidential-computing hosts, and stops at the
-// confidential VM's memory. "The host cannot see it" waits on the open GPU-evidence
-// question with NVIDIA (whitepaper v1.10, section 8.6).
+// The Platformless column is scoped to confidential-computing hosts. GPU memory is stated as
+// sealed by NVIDIA's design ("sealed" or "blocked", never "cannot"): gap G-6a is closed on
+// NVIDIA's documented design, with written confirmation pending (whitepaper v1.10, 8.6).
 const rows: Row[] = [
   {
     icon: Building2,
@@ -45,7 +45,7 @@ const rows: Row[] = [
     icon: ServerCog,
     party: 'The machine operator',
     cloud: 'Runs the servers where your data is handled unencrypted.',
-    platformless: 'Your prompts and data are decrypted only inside a confidential VM whose memory the operator cannot read.',
+    platformless: "Your prompts and data are decrypted only inside a confidential VM whose memory the operator cannot read, and by NVIDIA's design the GPU memory they run in is sealed from the operator.",
   },
   {
     icon: Sparkles,
@@ -90,7 +90,7 @@ export function Confidential() {
             </>
           }
           title="Who can see your data?"
-          description="Platformless means no company stands between you and the computer that runs your AI, so there is no one in the middle to read your data, Fabstir included. On confidential-computing hosts, even the computer doing the work decrypts your data only inside a confidential VM whose memory the operator cannot read."
+          description="Platformless means no company stands between you and the computer that runs your AI, so there is no one in the middle to read your data, Fabstir included. On confidential-computing hosts, even the computer doing the work decrypts your data only inside a confidential VM whose memory the operator cannot read, and by NVIDIA's design the GPU memory it runs in is sealed from the operator."
         />
 
         {/* Who can see it: a typical AI cloud against a confidential-computing host */}

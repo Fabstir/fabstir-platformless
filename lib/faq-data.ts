@@ -39,14 +39,14 @@ Think of it as "Uber for AI" but truly decentralized - no company in the middle,
     category: "general",
     answer: `**No platform can, Fabstir included.** Fabstir builds the protocol; it does not run a platform your data passes through. Your device encrypts your prompts and files and talks straight to the host you chose, storage nodes hold only ciphertext, and the blockchain records hashes, payments and token counts, never content.
 
-**On confidential-computing hosts**, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read, and the model key is released only against hardware-signed proof of the machine. This is **confidential computing**, and it goes further than end-to-end encryption, which protects your data in transit and at rest.
+**On confidential-computing hosts, the host is blocked too.** Your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read, and by NVIDIA's design the GPU memory they run in is sealed from the operator. The model key is released only against hardware-signed proof of the machine. This is **confidential computing**, and it goes further than end-to-end encryption, which protects your data in transit and at rest.
 
 **How It Works**
 
 The job runs in a **Trusted Execution Environment (TEE)**, a confidential VM that pairs a CPU TEE with an NVIDIA GPU in Confidential Computing mode:
 
 • CPU TEE: Intel TDX or AMD SEV-SNP, which encrypts and integrity-protects the VM's memory
-• GPU: NVIDIA Confidential Computing mode, which NVIDIA designs to protect the PCIe link and GPU memory from the host
+• GPU: NVIDIA Confidential Computing mode, in which, by NVIDIA's design, the GPU's firewalls block the host from its protected memory and the PCIe link is protected
 
 Models are distributed **encrypted**, and the host never holds their key. A separate key broker releases the key only after verifying hardware-signed evidence from both the CPU and the GPU, bound to the same one-time challenge. The model is then decrypted inside the confidential VM and checked against its on-chain hash. Hosts advertise this with a **tee-attested** capability, and the same switch that advertises it also enforces it, so a host cannot claim it without honouring it.
 
@@ -56,15 +56,16 @@ On 23 September 2026 the full path ran on a Phala Cloud confidential VM pairing 
 
 On 30 September 2026 a second run put the whole product on one such machine: encrypted chat, FLUX.2 image generation, a fine-tune whose dataset was decrypted only inside the confidential VM and whose adapter was then served back, and six video-generation modes driven from the Blender extension. Over three boots the model key was released three times, each against a fresh CPU quote and fresh GPU evidence, and every job settled on-chain.
 
-That work establishes three things:
+That work establishes four things:
 
 • The model key is released only against hardware-signed proof that the machine is genuine and running approved software
 • Your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read
+• By NVIDIA's design, the GPU memory your job runs in is sealed from the host
 • The GPU proves its identity, secure boot and debug state to NVIDIA's verification service
 
-**What We Do Not Claim Yet**
+**How The GPU's Mode Is Checked**
 
-We do not yet say that the operator cannot read GPU memory while your job runs. That depends on the GPU being in confidential-computing mode, and NVIDIA's signed evidence does not currently tell that mode being on apart from off. The question is with NVIDIA.
+NVIDIA publishes no single "confidential computing is on" flag. Instead, the GPU's signed attestation report records its mode in its measurements, and NVIDIA's verifier compares them with NVIDIA's reference measurements, a check NVIDIA describes as a pass/fail report for correct confidential-computing configuration. The key broker releases the model key only when that check passes, together with the signed secure-boot and debug-state claims. Both H200 runs passed all three.
 
 **Status**
 

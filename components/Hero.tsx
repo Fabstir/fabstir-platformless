@@ -113,10 +113,13 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          On confidential-computing hosts, your prompts, data and the model are decrypted only
-          inside a confidential VM whose memory the operator cannot read, and the model key is
-          released only against hardware-signed proof of the machine. Chat, coding agents,
-          images, video and fine-tuning, settled by smart contracts.
+          We&apos;ve built a way to run AI where no one in the middle, Fabstir included, sees
+          what you send or get back, whether text, images or video. On hosts that use
+          confidential computing, your data is unlocked only inside a sealed compartment that
+          Intel and NVIDIA build into the server&apos;s processor and H200 graphics chip, and by
+          their design the company running the server is blocked from seeing inside. Before the
+          AI model is unlocked, the chips prove they are genuine and sealed. Checked, not
+          promised.
         </motion.p>
 
         <motion.div

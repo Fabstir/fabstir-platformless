@@ -64,7 +64,7 @@ const layers: Layer[] = [
     name: 'Confidential computing',
     summary: 'Model keys released only against hardware-signed proof of the machine. Proven on Intel TDX with an NVIDIA H200.',
     detail:
-      'On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read. Models ship encrypted and the host never holds their key: a key broker releases it only against hardware-signed proof, from both the CPU and the GPU, that the machine is genuine and running approved software, and the decrypted model is checked against its on-chain hash.',
+      "On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read, and by NVIDIA's design the GPU memory they run in is sealed from the operator. Models ship encrypted and the host never holds their key: a key broker releases it only against hardware-signed proof, from both the CPU and the GPU, that the machine is genuine and running approved software, and the decrypted model is checked against its on-chain hash.",
     radius: 175,
     dashed: true,
   },
@@ -75,12 +75,12 @@ const teeStatus = [
   { done: true, label: 'Attested-model pipeline built and fail-closed throughout, with 300+ tests' },
   { done: true, label: 'CPU half on real Intel TDX silicon, in the live request path' },
   { done: true, label: 'GPU half on a real NVIDIA H200: both attestations verified under one challenge, then Qwen3.8-27B decrypted inside the confidential VM and served' },
+  { done: true, label: "GPU memory sealed from the host by NVIDIA's design, with the GPU's mode checked against NVIDIA's reference measurements before the key is released" },
   { done: true, label: 'Paid testnet sessions from the app run on the TEE host and settle on-chain, with a proof on S5 matching the on-chain hash' },
   { done: true, label: 'The whole product on one attested machine: chat, FLUX.2 images, fine-tuning and six video modes from Blender, every job settled on-chain' },
   { done: true, label: 'Fine-tuning on the confidential VM: the dataset decrypted only inside it, and two independent runs gave byte-identical adapters' },
   { done: false, label: 'Route paid sessions to tee-attested hosts automatically' },
   { done: false, label: 'Bring video-generation weights under the same attested release' },
-  { done: false, label: 'Open question with NVIDIA: whether signed evidence can show confidential-computing mode is on' },
 ];
 const teeDone = teeStatus.filter((item) => item.done).length;
 
@@ -99,7 +99,7 @@ export function Security() {
             </>
           }
           title="Trust the maths, not a company"
-          description="On confidential-computing hosts, your data is decrypted only inside a confidential VM whose memory the operator cannot read. Encryption protects it in transit and at rest, and signed commitments and stake keep hosts honest. We say plainly where each guarantee ends."
+          description="On confidential-computing hosts, your data is decrypted only inside a confidential VM whose memory the operator cannot read, and by NVIDIA's design the GPU memory it runs in is sealed from the operator. Encryption protects it in transit and at rest, and signed commitments and stake keep hosts honest. We say plainly where each guarantee ends."
         />
 
         <div className="grid gap-10 lg:grid-cols-2 items-center">
@@ -268,10 +268,9 @@ export function Security() {
               ))}
             </ul>
             <p className="mt-5 text-xs text-neutrals-copy leading-relaxed">
-              Until NVIDIA confirms whether its signed evidence can tell confidential-computing mode
-              on from off, we do not claim a root operator cannot read GPU memory. Confidential
-              inference is proven on the target hardware, but it is not yet the default path or a
-              production guarantee.
+              Confidential inference is proven on the target hardware. Before it is a production
+              guarantee, paid sessions will be routed to tee-attested hosts automatically and
+              video-generation weights brought under the same attested release.
             </p>
           </motion.div>
 

@@ -85,7 +85,7 @@ const capabilities: Capability[] = [
   {
     icon: Cpu,
     title: 'Confidential computing',
-    body: 'On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read. On 30 September the whole product ran on one attested Intel TDX and NVIDIA H200 machine.',
+    body: "On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read, and by NVIDIA's design the GPU memory they run in is sealed from the operator. On 30 September the whole product ran on one attested Intel TDX and NVIDIA H200 machine.",
     tag: 'Proven on hardware',
     href: '#confidential',
     className: 'lg:col-span-2',

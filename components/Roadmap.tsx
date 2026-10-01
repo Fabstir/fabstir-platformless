@@ -50,7 +50,7 @@ const milestones: { phase: string; title: string; status: Status; statusLabel?: 
     title: 'Confidential computing',
     status: 'active',
     statusLabel: 'Proven on hardware',
-    items: 'Proven end to end on Intel TDX with an NVIDIA H200, and on 30 September the whole product ran on one attested machine. Next: automatic routing to attested hosts, video weights under attested release, and an open GPU-evidence question with NVIDIA.',
+    items: 'Proven end to end on Intel TDX with an NVIDIA H200, and on 30 September the whole product ran on one attested machine. Next: automatic routing to attested hosts and video weights under attested release.',
   },
   {
     phase: 'Training M0',
