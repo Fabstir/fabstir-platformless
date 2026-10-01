@@ -9,13 +9,14 @@ import { Github, Menu, Play, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
+  { href: '#confidential', label: 'Confidential' },
+  { href: '#industries', label: 'Industries' },
+  { href: '#security', label: 'Security' },
   { href: '#features', label: 'Features' },
   { href: '#video', label: 'AI Video' },
   { href: '#agents', label: 'Agents' },
   { href: '#fine-tuning', label: 'Fine-Tuning' },
-  { href: '#security', label: 'Security' },
   { href: '#hosts', label: 'Hosts' },
-  { href: '#roadmap', label: 'Roadmap' },
   { href: '#faq', label: 'FAQ' },
 ];
 
@@ -92,7 +93,7 @@ export function Header() {
             <span className="hidden sm:inline">GitHub</span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-2 whitespace-nowrap">
+          <div className="hidden md:flex xl:hidden items-center space-x-2 whitespace-nowrap">
             <span className="text-neutrals-copy text-sm">Docs</span>
             <Badge variant="secondary" className="bg-neutrals-border text-neutrals-copy-light text-xs">
               Coming Soon

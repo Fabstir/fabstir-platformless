@@ -85,9 +85,9 @@ const capabilities: Capability[] = [
   {
     icon: Cpu,
     title: 'Confidential computing',
-    body: 'The route to host-blind inference. Model keys are released only to a verified confidential VM, and the model is decrypted only inside it. Now proven end to end on Intel TDX with an NVIDIA H200, with paid testnet sessions run on it.',
+    body: 'On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read. On 30 September the whole product ran on one attested Intel TDX and NVIDIA H200 machine.',
     tag: 'Proven on hardware',
-    href: '#security',
+    href: '#confidential',
     className: 'lg:col-span-2',
   },
   {

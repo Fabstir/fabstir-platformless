@@ -21,7 +21,7 @@ When you use traditional AI platforms, you're forced to:
 
 Platformless AI eliminates these risks through:
 
-**End-to-End Encryption**: Your prompts and responses are encrypted on your device before being sent. GPU providers, storage nodes, and blockchain observers cannot read your content. Only you hold the decryption keys.
+**Confidential by Design**: Your prompts and responses are encrypted on your device before being sent, and no platform sits in between. Storage nodes and blockchain observers cannot read your content. On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read.
 
 **Smart Contract Payments**: Jobs are assigned and payments are settled automatically via smart contracts on Base L2. No platform takes a cut. No middleman can freeze your funds.
 
@@ -32,6 +32,43 @@ Platformless AI eliminates these risks through:
 **Censorship-Resistant**: No single entity can deplatform you, filter your prompts, or alter your results. The network operates without central control.
 
 Think of it as "Uber for AI" but truly decentralized - no company in the middle, just smart contracts coordinating between users and GPU providers.`,
+  },
+  {
+    id: "general-12",
+    question: "Can Fabstir or the host see my data?",
+    category: "general",
+    answer: `**No platform can, Fabstir included.** Fabstir builds the protocol; it does not run a platform your data passes through. Your device encrypts your prompts and files and talks straight to the host you chose, storage nodes hold only ciphertext, and the blockchain records hashes, payments and token counts, never content.
+
+**On confidential-computing hosts**, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read, and the model key is released only against hardware-signed proof of the machine. This is **confidential computing**, and it goes further than end-to-end encryption, which protects your data in transit and at rest.
+
+**How It Works**
+
+The job runs in a **Trusted Execution Environment (TEE)**, a confidential VM that pairs a CPU TEE with an NVIDIA GPU in Confidential Computing mode:
+
+• CPU TEE: Intel TDX or AMD SEV-SNP, which encrypts and integrity-protects the VM's memory
+• GPU: NVIDIA Confidential Computing mode, which NVIDIA designs to protect the PCIe link and GPU memory from the host
+
+Models are distributed **encrypted**, and the host never holds their key. A separate key broker releases the key only after verifying hardware-signed evidence from both the CPU and the GPU, bound to the same one-time challenge. The model is then decrypted inside the confidential VM and checked against its on-chain hash. Hosts advertise this with a **tee-attested** capability, and the same switch that advertises it also enforces it, so a host cannot claim it without honouring it.
+
+**Proven on Real Hardware**
+
+On 23 September 2026 the full path ran on a Phala Cloud confidential VM pairing Intel TDX with an NVIDIA H200. The key broker verified both attestations under one challenge and released the model key, and the open-weight Qwen3.8-27B was decrypted inside the confidential VM and served. The same day, paid testnet sessions from the Platformless AI app ran on that host with on-chain checkpoints and settlement, and a proof published to S5 was fetched from an unrelated machine and matched the hash committed on-chain.
+
+On 30 September 2026 a second run put the whole product on one such machine: encrypted chat, FLUX.2 image generation, a fine-tune whose dataset was decrypted only inside the confidential VM and whose adapter was then served back, and six video-generation modes driven from the Blender extension. Over three boots the model key was released three times, each against a fresh CPU quote and fresh GPU evidence, and every job settled on-chain.
+
+That work establishes three things:
+
+• The model key is released only against hardware-signed proof that the machine is genuine and running approved software
+• Your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read
+• The GPU proves its identity, secure boot and debug state to NVIDIA's verification service
+
+**What We Do Not Claim Yet**
+
+We do not yet say that the operator cannot read GPU memory while your job runs. That depends on the GPU being in confidential-computing mode, and NVIDIA's signed evidence does not currently tell that mode being on apart from off. The question is with NVIDIA.
+
+**Status**
+
+Proven on the target hardware, but not yet a production guarantee. Next: automatic routing of paid sessions to tee-attested hosts, and video-generation weights under the same attested release.`,
   },
   {
     id: "general-2",
@@ -55,7 +92,7 @@ Every major AI service today is a **platform** - a centralized company that sits
 Platformless AI replaces the centralized platform with:
 • **Smart contracts** for coordination (trustless, automated, censorship-resistant)
 • **Direct P2P connections** for model access (no intermediary)
-• **End-to-end encryption** for privacy (no one can read your data)
+• **End-to-end encryption and confidential computing** for privacy (no platform in the path, and on confidential-computing hosts, decryption only inside a confidential VM)
 • **Decentralized storage** for conversation history (S5 network, not company servers)
 • **Transparent pricing** (see exactly what GPU providers charge)
 • **No vendor lock-in** (standard APIs, portable to any provider)
@@ -78,7 +115,7 @@ The infrastructure is platformless - no company controls it, no middleman extrac
 
 4. **Inference Request**: Your prompt is encrypted on your device before leaving. Sent directly to the GPU provider via WebSocket.
 
-5. **Model Inference**: Provider decrypts the prompt, generates a response, and encrypts it before sending back.
+5. **Model Inference**: Provider decrypts the prompt, generates a response, and encrypts it before sending back. On a confidential-computing host, the prompt is decrypted only inside a confidential VM whose memory the operator cannot read.
 
 6. **Proof of Work**: Every 1000 tokens, the provider generates a STARK proof proving computation occurred. Proof is stored on S5 decentralized storage.
 
@@ -94,7 +131,7 @@ The infrastructure is platformless - no company controls it, no middleman extrac
     id: "general-4",
     question: "Is my data private?",
     category: "general",
-    answer: `**Yes - end-to-end encryption by default.** Your prompts and responses are encrypted before leaving your device, and only you hold the decryption keys.
+    answer: `**Yes - end-to-end encryption by default, and no platform in between.** Your prompts and responses are encrypted before leaving your device and decrypted only by the host you chose, to run your job. On confidential-computing hosts, they are decrypted only inside a confidential VM whose memory the operator cannot read.
 
 **Encryption Details**:
 
@@ -106,9 +143,9 @@ The infrastructure is platformless - no company controls it, no middleman extrac
 
 ✅ Eavesdropping: Network intermediaries see only encrypted data
 ✅ Data Leaks: Even if S5 storage is breached, conversations are encrypted
-✅ Malicious Nodes: GPU providers cannot read your prompts
+✅ Host Operators: On confidential-computing hosts, your prompts are decrypted only inside a confidential VM whose memory the operator cannot read
 ✅ Blockchain Analysis: On-chain data shows only hashes, not content
-✅ Subpoenas/Warrants: No plaintext data exists to hand over
+✅ Subpoenas/Warrants: No platform holds a copy of your conversations, and your stored history is encrypted under your keys
 ✅ Platform Surveillance: No company can analyze your usage patterns
 
 **What This Doesn't Protect**:
@@ -122,9 +159,9 @@ The infrastructure is platformless - no company controls it, no middleman extrac
 | Feature | Traditional Platforms | Platformless AI |
 |---------|----------------------|-----------------|
 | Data Privacy | Company sees everything | End-to-end encrypted |
-| Data Training | May train on your data | Impossible (encrypted) |
+| Data Training | May train on your data | No platform collects it |
 | Data Retention | Indefinite on servers | You control S5 storage |
-| Third-party Access | Possible via subpoena | No plaintext exists |
+| Third-party Access | Possible via subpoena | No platform copy to hand over |
 
 **Performance Impact**: Negligible - session initialization takes ~10ms, per-message encryption/decryption <1ms.`,
   },
@@ -157,7 +194,7 @@ The infrastructure is platformless - no company controls it, no middleman extrac
 
 **Censorship-Resistant**: No content moderation policies. No filtered results. No banned topics. The network can't be shut down.
 
-**Privacy by Design**: Encryption isn't optional - it's built into the protocol. Providers literally cannot read your data.
+**Privacy by Design**: Encryption isn't optional - it's built into the protocol. There is no platform to read your data, and on confidential-computing hosts it is decrypted only inside a confidential VM whose memory the operator cannot read.
 
 **Who Should Use Platformless AI?**
 
@@ -227,11 +264,11 @@ Set \`OPENAI_BASE_URL=http://localhost:3457/v1\` and your OpenAI SDK code works 
 
 **Why switch?**
 
-• **Privacy** — End-to-end encrypted; no intermediary sees your data
-• **No vendor lock-in** — Switch hosts or models without code changes
-• **No rate limits** — Based on availability, not arbitrary caps
-• **Market pricing** — Direct GPU rates without platform markup
-• **Compliance-ready** — Cryptographic guarantees for GDPR and HIPAA scenarios`,
+• **Privacy**: End-to-end encrypted, with no intermediary that sees your data
+• **No vendor lock-in**: Switch hosts or models without code changes
+• **No rate limits**: Based on availability, not arbitrary caps
+• **Market pricing**: Direct GPU rates without platform markup
+• **Built for regulated data**: No platform in the data flow, and confidential-computing hosts that give your assessors hardware-signed evidence to examine`,
   },
   {
     id: "general-8",
@@ -381,40 +418,6 @@ A native **Blender 5.x** extension brings generation directly into the Video Seq
 **Privacy**: Video prompts, input images, and generated frames flow through the same end-to-end encrypted channel as all other inference.`,
   },
   {
-    id: "general-12",
-    question: "What is confidential computing and host-blind inference?",
-    category: "general",
-    answer: `**Confidential computing** is the route to **host-blind inference**: serving a model so that even the operator of the GPU host cannot read your prompt or the model weights. It goes further than end-to-end encryption, which protects your data in transit and at rest but still lets the host you chose decrypt your prompt in memory to run it.
-
-**How It Works**
-
-The model is served from a **Trusted Execution Environment (TEE)**, a confidential VM that pairs a CPU TEE with an NVIDIA GPU in Confidential Computing mode:
-
-• CPU TEE: Intel TDX or AMD SEV-SNP, which encrypts and integrity-protects the VM's memory
-• GPU: NVIDIA Confidential Computing mode, which NVIDIA designs to protect the PCIe link and GPU memory from the host
-
-Models are distributed **encrypted**, and the host never holds their key. A separate key broker releases the key only after verifying hardware-signed evidence from both the CPU and the GPU, bound to the same one-time challenge. The model is then decrypted inside the confidential VM and checked against its on-chain hash. Hosts advertise this with a **tee-attested** capability, and the same switch that advertises it also enforces it, so a host cannot claim it without honouring it.
-
-**Proven on Real Hardware**
-
-On 23 September 2026 the full path ran on a Phala Cloud confidential VM pairing Intel TDX with an NVIDIA H200. The key broker verified both attestations under one challenge and released the model key, and the open-weight Qwen3.8-27B was decrypted inside the confidential VM and served. The same day, paid testnet sessions from the Platformless AI app ran on that host with on-chain checkpoints and settlement, and a proof published to S5 was fetched from an unrelated machine and matched the hash committed on-chain.
-
-That run establishes three things:
-
-• The model key is released only against hardware-signed proof that the machine is genuine and running approved software
-• The model is decrypted only inside a confidential VM whose memory the operator cannot read
-• The GPU proves its identity, secure boot and debug state to NVIDIA's verification service
-
-**What We Do Not Claim Yet**
-
-We do not yet claim that the operator cannot read GPU memory while the model runs. That depends on the GPU being in confidential-computing mode, and NVIDIA's signed evidence does not currently tell that mode being on apart from off. The question is with NVIDIA.
-
-**Status**
-
-Proven on the target hardware, but not yet a production guarantee. Paid sessions are routed to tee-attested hosts by hand today rather than automatically, and video-generation weights are not yet under the same attested release.`,
-  },
-
-  {
     id: "general-13",
     question: "Can I train a model on my own private data?",
     category: "general",
@@ -441,9 +444,11 @@ A finished adapter attaches to an ordinary chat session by pointer. The host ver
 
 Fine-tuning rides the same session-job machinery as inference: the same escrow, the same per-slice proof submission, the same dispute window and 90/10 settlement split, distinguished only by its own registered model id. To the chain, a training job is simply a session that consumes tokens and submits proofs.
 
-**The Honest Caveat**
+**Where The Trust Boundary Sits**
 
-End-to-end encryption protects your corpus in transit and at rest, staged files are removed on every terminal path and swept at start-up, and the adapter is re-encrypted before it leaves. But the host must decrypt your dataset in order to tokenise and train on it, and shards live on a staging volume for the length of the run. Training has the same trust boundary as inference, applied to a larger and more sensitive input. Confidential computing is the route that closes that window, rather than a mitigation already in place.`,
+End-to-end encryption protects your corpus in transit and at rest, staged files are removed on every terminal path and swept at start-up, and the adapter is re-encrypted before it leaves. But the host must decrypt your dataset in order to tokenise and train on it, so training has the same trust boundary as inference, applied to a larger and more sensitive input.
+
+On a confidential-computing host, the dataset is decrypted only inside the confidential VM. On 30 September 2026 a fine-tune ran exactly that way, and two independent runs of the same job produced byte-identical adapters. The next step is releasing the dataset key only to an attested machine, as model keys already are.`,
   },
 
   // Users FAQ
@@ -798,7 +803,7 @@ This means you can build applications that answer questions from your private kn
 
 **Privacy Advantage**
 
-Unlike centralised RAG services where the platform can see your documents and queries, Platformless AI keeps everything encrypted. The host processes your embeddings and queries but the data is encrypted in transit and at rest on S5. Only you hold the decryption keys.`,
+Unlike centralised RAG services where the platform can see your documents and queries, Platformless AI has no platform to see them. Your documents and queries are encrypted in transit and at rest on S5, and the host decrypts them only to run your job. On a confidential-computing host, they are decrypted only inside a confidential VM whose memory the operator cannot read.`,
   },
   {
     id: "users-8",

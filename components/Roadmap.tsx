@@ -50,13 +50,13 @@ const milestones: { phase: string; title: string; status: Status; statusLabel?: 
     title: 'Confidential computing',
     status: 'active',
     statusLabel: 'Proven on hardware',
-    items: 'Proven end to end on Intel TDX with an NVIDIA H200, with paid testnet sessions run on it. Next: automatic routing to attested hosts, video weights under attested release, and an open GPU-evidence question with NVIDIA.',
+    items: 'Proven end to end on Intel TDX with an NVIDIA H200, and on 30 September the whole product ran on one attested machine. Next: automatic routing to attested hosts, video weights under attested release, and an open GPU-evidence question with NVIDIA.',
   },
   {
     phase: 'Training M0',
     title: 'Private fine-tuning',
     status: 'active',
-    items: 'Demonstrated end to end on real GPUs and served across hosts. Next: paid settlement gates on testnet, then confidential training.',
+    items: 'Demonstrated end to end on real GPUs, served across hosts, and run on an attested confidential VM. Next: paid settlement gates on testnet, then dataset keys released only to attested machines.',
   },
   {
     phase: 'Mainnet prerequisite',

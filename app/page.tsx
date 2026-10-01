@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Showreel } from '@/components/Showreel';
-import { ValueProposition } from '@/components/ValueProposition';
+import { Confidential } from '@/components/Confidential';
+import { Industries } from '@/components/Industries';
 import { Capabilities } from '@/components/Capabilities';
 import { SessionFlow } from '@/components/SessionFlow';
 import { VideoGeneration } from '@/components/VideoGeneration';
@@ -30,7 +31,9 @@ export default function Home() {
       <Header />
       <Hero onJoinWaitlist={openWaitlist} />
       <Showreel />
-      <ValueProposition />
+      <Confidential />
+      <Industries />
+      <Security />
       <Capabilities />
       <SessionFlow />
       <VideoGeneration />
@@ -38,7 +41,6 @@ export default function Home() {
       <Orchestration />
       <Training />
       <Streaming />
-      <Security />
       <Hosts onJoinWaitlist={openWaitlist} />
       <Architecture />
       <Roadmap />

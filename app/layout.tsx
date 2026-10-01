@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Platformless AI - AI Without the Platform',
-  description: 'Trustless. Private. Censorship-Resistant. A peer-to-peer marketplace of independent GPU hosts for encrypted chat, coding agents, image and video generation, streaming and private fine-tuning, settled by smart contracts.',
+  title: 'Platformless AI - Confidential AI Without the Platform',
+  description: 'No platform can see your data, because there is not one. On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read. Chat, coding agents, images, video and private fine-tuning on independent GPU hosts, settled by smart contracts.',
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   openGraph: {
-    title: 'Platformless AI - AI Without the Platform',
-    description: 'Trustless. Private. Censorship-Resistant.',
+    title: 'Platformless AI - Confidential AI Without the Platform',
+    description: 'No platform can see your data. There is not one.',
   },
 };
 

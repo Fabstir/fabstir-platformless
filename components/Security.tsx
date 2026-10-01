@@ -37,7 +37,7 @@ const layers: Layer[] = [
     name: 'End-to-end encryption',
     summary: 'ECDH session keys, XChaCha20-Poly1305, forward secrecy.',
     detail:
-      'Every session gets a fresh ephemeral key, costing around 1 ms per message. No platform, proxy or storage node ever sees plaintext. The host you choose decrypts in memory to run your job, and never persists it.',
+      'Every session gets a fresh ephemeral key, costing around 1 ms per message. No platform, proxy or storage node ever sees your data unencrypted. The host decrypts only to run your job and never persists it, and on a confidential-computing host it does so only inside the confidential VM.',
     radius: 70,
   },
   {
@@ -62,28 +62,30 @@ const layers: Layer[] = [
     id: 'tee',
     icon: Cpu,
     name: 'Confidential computing',
-    summary: 'Model keys released only to a verified confidential VM. Proven on Intel TDX with an NVIDIA H200.',
+    summary: 'Model keys released only against hardware-signed proof of the machine. Proven on Intel TDX with an NVIDIA H200.',
     detail:
-      'Models ship encrypted and the host never holds their key. A key broker releases it only against hardware-signed proof, from both the CPU and the GPU, that the machine is genuine and running approved software. The model is then decrypted only inside a confidential VM whose memory the operator cannot read, and checked against its on-chain hash.',
+      'On confidential-computing hosts, your prompts, data and the model are decrypted only inside a confidential VM whose memory the operator cannot read. Models ship encrypted and the host never holds their key: a key broker releases it only against hardware-signed proof, from both the CPU and the GPU, that the machine is genuine and running approved software, and the decrypted model is checked against its on-chain hash.',
     radius: 175,
     dashed: true,
   },
 ];
 
-// Whitepaper v1.9, section 8.6 and the confidential computing roadmap.
+// Whitepaper v1.10, section 8.6 and the confidential computing roadmap.
 const teeStatus = [
   { done: true, label: 'Attested-model pipeline built and fail-closed throughout, with 300+ tests' },
   { done: true, label: 'CPU half on real Intel TDX silicon, in the live request path' },
   { done: true, label: 'GPU half on a real NVIDIA H200: both attestations verified under one challenge, then Qwen3.8-27B decrypted inside the confidential VM and served' },
   { done: true, label: 'Paid testnet sessions from the app run on the TEE host and settle on-chain, with a proof on S5 matching the on-chain hash' },
-  { done: false, label: 'Route paid sessions to tee-attested hosts automatically (today by hand)' },
+  { done: true, label: 'The whole product on one attested machine: chat, FLUX.2 images, fine-tuning and six video modes from Blender, every job settled on-chain' },
+  { done: true, label: 'Fine-tuning on the confidential VM: the dataset decrypted only inside it, and two independent runs gave byte-identical adapters' },
+  { done: false, label: 'Route paid sessions to tee-attested hosts automatically' },
   { done: false, label: 'Bring video-generation weights under the same attested release' },
   { done: false, label: 'Open question with NVIDIA: whether signed evidence can show confidential-computing mode is on' },
 ];
 const teeDone = teeStatus.filter((item) => item.done).length;
 
 export function Security() {
-  const [activeLayer, setActiveLayer] = useState<string>('encryption');
+  const [activeLayer, setActiveLayer] = useState<string>('tee');
   const active = layers.find((l) => l.id === activeLayer) ?? layers[0];
 
   return (
@@ -97,7 +99,7 @@ export function Security() {
             </>
           }
           title="Trust the maths, not a company"
-          description="Encryption protects your data in transit and at rest. Signed commitments and stake keep hosts honest. Confidential computing, now proven on real hardware, is the route to hosts that cannot see your data at all. We say plainly where each guarantee ends."
+          description="On confidential-computing hosts, your data is decrypted only inside a confidential VM whose memory the operator cannot read. Encryption protects it in transit and at rest, and signed commitments and stake keep hosts honest. We say plainly where each guarantee ends."
         />
 
         <div className="grid gap-10 lg:grid-cols-2 items-center">
@@ -237,7 +239,8 @@ export function Security() {
             <p className="mb-4 text-sm text-neutrals-copy leading-relaxed">
               On 23 September 2026 the whole path ran on a Phala Cloud confidential VM pairing Intel
               TDX with an NVIDIA H200. Measurements were recomputed independently before pinning,
-              and a replayed key request was refused.
+              and a replayed key request was refused. On 30 September the whole product ran on one
+              such machine, with three attested key releases over three boots.
             </p>
             <div className="mb-5 flex gap-0.5" aria-hidden="true">
               {teeStatus.map((item, i) => (

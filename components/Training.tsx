@@ -168,10 +168,11 @@ export function Training() {
                 <p className="text-sm text-neutrals-copy leading-relaxed">
                   Your corpus is encrypted in transit and at rest, staged files are
                   wiped on every exit path, and the adapter is re-encrypted before
-                  it leaves. But the host must decrypt your dataset to train on it.
-                  Confidential computing, now proven for inference on real hardware,
-                  is the route that closes that window for training too, rather than
-                  something already in place.
+                  it leaves. The host must decrypt your dataset to train on it, and
+                  on a confidential-computing host it is decrypted only inside the
+                  confidential VM. A fine-tune ran exactly that way on 30 September.
+                  Releasing the dataset key only to an attested machine, as model
+                  keys already are, is the next step.
                 </p>
               </div>
             </div>

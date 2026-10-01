@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, ShieldCheck } from 'lucide-react';
 import { NetworkCanvas } from '@/components/NetworkCanvas';
 import { CountUp } from '@/components/CountUp';
 
@@ -11,10 +11,10 @@ interface HeroProps {
 }
 
 const stats = [
+  { value: 0, suffix: '', label: 'platforms that can read your data' },
   { value: 13, suffix: '', label: 'AI video generation modes' },
   { value: 90, suffix: '%', label: 'of every payment goes to the host' },
   { value: 2, suffix: '', label: 'drop-in APIs: Anthropic and OpenAI compatible' },
-  { value: 0, suffix: '', label: 'platforms in the middle' },
 ];
 
 export function Hero({ onJoinWaitlist }: HeroProps) {
@@ -67,15 +67,18 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
 
       <div className="container max-w-5xl mx-auto text-center space-y-8 relative z-10">
         <motion.a
-          href="#video"
-          className="inline-flex items-center gap-2 rounded-full border border-secondary/40 bg-background/60 px-4 py-1.5 text-sm text-neutrals-copy-light backdrop-blur hover:border-secondary transition-colors"
+          href="#confidential"
+          className="inline-flex items-center gap-2 rounded-full border border-success/40 bg-background/60 px-4 py-1.5 text-sm text-neutrals-copy-light backdrop-blur hover:border-success transition-colors"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-white">New</span>
-          AI video generation, now inside Blender
-          <ArrowRight className="h-4 w-4 text-secondary-light" />
+          <span className="inline-flex items-center gap-1 rounded-full bg-success px-2 py-0.5 text-xs font-semibold text-white">
+            <ShieldCheck className="h-3 w-3" /> Proven
+          </span>
+          <span className="sm:hidden">The whole product, on one attested machine</span>
+          <span className="hidden sm:inline">On 30 September the whole product ran on one attested machine</span>
+          <ArrowRight className="h-4 w-4 shrink-0 text-success" />
         </motion.a>
 
         <motion.h1
@@ -95,7 +98,8 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
-          AI Without the Platform
+          No platform can see your data.{' '}
+          <span className="text-gradient whitespace-nowrap">There isn&apos;t one.</span>
         </motion.h2>
 
         <motion.p
@@ -104,9 +108,9 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <span>Trustless</span>
+          <span>Confidential</span>
           <span className="text-primary">•</span>
-          <span>Private</span>
+          <span>Trustless</span>
           <span className="text-secondary">•</span>
           <span>Censorship-Resistant</span>
         </motion.p>
@@ -117,9 +121,10 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          Chat, coding agents, image and video generation, streaming and fine-tuning on a
-          peer-to-peer marketplace of independent GPU hosts. Encrypted end to end, settled
-          by smart contracts, with no company in between.
+          On confidential-computing hosts, your prompts, data and the model are decrypted only
+          inside a confidential VM whose memory the operator cannot read, and the model key is
+          released only against hardware-signed proof of the machine. Chat, coding agents,
+          images, video and fine-tuning, settled by smart contracts.
         </motion.p>
 
         <motion.div
