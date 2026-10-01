@@ -354,7 +354,7 @@ export function VideoGeneration() {
               ))}
             </ul>
             <p className="mt-6 text-xs text-neutrals-copy leading-relaxed">
-              Cost scales with frames × width × height. 90% goes to the host and 10% to the
+              Cost scales with frames × width × height. 88% goes to the host and 12% to the
               protocol treasury.
             </p>
           </motion.figure>

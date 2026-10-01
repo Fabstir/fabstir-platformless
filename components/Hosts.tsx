@@ -55,12 +55,12 @@ export function Hosts({ onJoinWaitlist }: HostsProps) {
               <Server className="h-3.5 w-3.5" /> For GPU hosts
             </>
           }
-          title="Run a host. Keep 90%."
+          title="Run a host. Keep 88%."
           description="Hosts are independent businesses. You set your own prices, choose the models you serve, and get paid by smart contract, with no platform adding a markup on top."
         />
 
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* 90 / 10 split */}
+          {/* 88 / 12 split */}
           <motion.figure
             className="rounded-2xl border border-primary/30 bg-card/70 p-6 backdrop-blur"
             initial={{ opacity: 0, y: 20 }}
@@ -72,30 +72,30 @@ export function Hosts({ onJoinWaitlist }: HostsProps) {
               <h3 className="font-semibold text-foreground">Where each payment goes</h3>
               <p className="text-xs text-neutrals-copy">Settled automatically when a session completes</p>
             </figcaption>
-            <p className="mt-6 text-6xl font-extrabold text-foreground">90%</p>
+            <p className="mt-6 text-6xl font-extrabold text-foreground">88%</p>
             <p className="text-sm text-neutrals-copy-light">to the host that did the work</p>
-            <div className="mt-6 flex h-6 gap-0.5" role="img" aria-label="90% to the host, 10% to the protocol treasury">
+            <div className="mt-6 flex h-6 gap-0.5" role="img" aria-label="88% to the host, 12% to the protocol treasury">
               <motion.div
                 className="h-full rounded-l-[4px] bg-primary"
                 initial={{ width: 0 }}
-                whileInView={{ width: '90%' }}
+                whileInView={{ width: '88%' }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
               />
               <motion.div
                 className="h-full rounded-r-[4px] bg-secondary"
                 initial={{ width: 0 }}
-                whileInView={{ width: '10%' }}
+                whileInView={{ width: '12%' }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               />
             </div>
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-neutrals-copy-light">
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-sm bg-primary" /> Host, 90%
+                <span className="h-2.5 w-2.5 rounded-sm bg-primary" /> Host, 88%
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-sm bg-secondary" /> Protocol treasury, 10%
+                <span className="h-2.5 w-2.5 rounded-sm bg-secondary" /> Protocol treasury, 12%
               </span>
             </div>
             <p className="mt-5 text-sm text-neutrals-copy leading-relaxed">

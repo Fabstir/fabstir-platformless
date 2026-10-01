@@ -76,7 +76,7 @@ const steps: Step[] = [
   },
   {
     title: 'Settle automatically',
-    body: "When the session ends the contract pays the host 90%, sends 10% to the protocol treasury, and refunds whatever you didn't use.",
+    body: "When the session ends the contract pays the host 88%, sends 12% to the protocol treasury, and refunds whatever you didn't use.",
     active: ['chain', 'host', 'client'],
     packets: [['chain', 'host'], ['chain', 'client']],
   },

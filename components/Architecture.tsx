@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShieldCheck } from 'lucide-react';
 
 export function Architecture() {
   return (
@@ -59,11 +58,18 @@ export function Architecture() {
             href="https://hacken.io/audits/fabstir/"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-4 rounded-lg bg-background/50 border border-success/30 hover:border-success/50 hover:scale-[1.02] transition-all text-center"
+            className="group flex flex-col items-center gap-2 rounded-lg transition-transform hover:scale-[1.02]"
           >
-            <ShieldCheck className="h-4 w-4 text-success mx-auto mb-1" />
-            <div className="font-semibold text-primary-content mb-1">Hacken Audited</div>
-            <div className="text-neutrals-copy text-xs">Smart Contracts — View Report</div>
+            <Image
+              src="/images/audited-by-hacken-color.svg"
+              alt="Audited by Hacken"
+              width={174}
+              height={64}
+              unoptimized
+            />
+            <span className="text-xs text-neutrals-copy group-hover:text-foreground transition-colors">
+              Smart contracts: view the report
+            </span>
           </Link>
         </div>
 

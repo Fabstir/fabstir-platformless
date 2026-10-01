@@ -149,7 +149,7 @@ export function Training() {
                 </h3>
                 <p className="text-sm text-neutrals-copy leading-relaxed">
                   Fine-tuning rides the same escrow, per-slice proofs, dispute
-                  window and 90/10 split as inference. It is just a session with
+                  window and 88/12 split as inference. It is just a session with
                   its own registered model id. Because a slice is a token budget
                   rather than anything language-specific, video LoRA training sits
                   on the identical rails.

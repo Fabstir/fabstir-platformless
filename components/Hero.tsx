@@ -4,18 +4,10 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, ShieldCheck } from 'lucide-react';
 import { NetworkCanvas } from '@/components/NetworkCanvas';
-import { CountUp } from '@/components/CountUp';
 
 interface HeroProps {
   onJoinWaitlist: () => void;
 }
-
-const stats = [
-  { value: 0, suffix: '', label: 'platforms that can read your data' },
-  { value: 13, suffix: '', label: 'AI video generation modes' },
-  { value: 90, suffix: '%', label: 'of every payment goes to the host' },
-  { value: 2, suffix: '', label: 'drop-in APIs: Anthropic and OpenAI compatible' },
-];
 
 export function Hero({ onJoinWaitlist }: HeroProps) {
   return (
@@ -152,27 +144,6 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
             Watch the film
           </motion.a>
         </motion.div>
-
-        <motion.dl
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-10 max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col rounded-xl border border-neutrals-border/50 bg-background/50 px-4 py-5 backdrop-blur"
-            >
-              <dt className="order-last mt-1 text-xs sm:text-sm text-neutrals-copy leading-snug">
-                {stat.label}
-              </dt>
-              <dd className="text-4xl font-extrabold text-foreground">
-                <CountUp to={stat.value} suffix={stat.suffix} />
-              </dd>
-            </div>
-          ))}
-        </motion.dl>
       </div>
     </section>
   );

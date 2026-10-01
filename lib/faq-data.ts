@@ -409,7 +409,7 @@ Resolutions up to **1440p** have been validated, with clips generated and paymen
 **Provenance & Billing**
 
 • **Pinned-template provenance** — generations use pinned workflow templates with byte-exact binding of the input image, so each output is verifiably tied to its inputs.
-• **Megapixel-frame billing** — you pay for what you render, roughly **$0.04 for an SD 5-second clip up to ~$0.91 for 4K**, with the standard 90/10 host/network split settled automatically.
+• **Megapixel-frame billing** — you pay for what you render, roughly **$0.04 for an SD 5-second clip up to ~$0.91 for 4K**, with the standard 88/12 host/network split settled automatically.
 
 **AI Video Inside Blender**
 
@@ -442,7 +442,7 @@ A finished adapter attaches to an ordinary chat session by pointer. The host ver
 
 **No New Smart Contracts Were Needed**
 
-Fine-tuning rides the same session-job machinery as inference: the same escrow, the same per-slice proof submission, the same dispute window and 90/10 settlement split, distinguished only by its own registered model id. To the chain, a training job is simply a session that consumes tokens and submits proofs.
+Fine-tuning rides the same session-job machinery as inference: the same escrow, the same per-slice proof submission, the same dispute window and 88/12 settlement split, distinguished only by its own registered model id. To the chain, a training job is simply a session that consumes tokens and submits proofs.
 
 **Where The Trust Boundary Sits**
 
@@ -603,7 +603,7 @@ Approval process:
 ✅ **Market-Driven**: Providers compete on price
 ✅ **Transparent**: See exact GPU costs, no hidden markup
 ✅ **Direct P2P**: Users pay providers directly via smart contracts
-✅ **10% Network Fee Only**: Goes to protocol treasury for development
+✅ **12% Network Fee Only**: Goes to protocol treasury for development
 
 **Additional Cost Savings**:
 
@@ -892,7 +892,7 @@ Select the adapter when starting a chat and the host stages it private to that s
 
 **What It Costs**
 
-Training is billed per token at the price the host registered on-chain, settled slice by slice with the standard 90/10 host/network split. Anything rejected before GPU work begins settles to zero and returns your deposit.`,
+Training is billed per token at the price the host registered on-chain, settled slice by slice with the standard 88/12 host/network split. Anything rejected before GPU work begins settles to zero and returns your deposit.`,
   },
 
   // Hosting FAQ
@@ -1038,8 +1038,8 @@ Competitive market pricing:
 • **70B models**: ~$0.40-0.70 per 1M tokens
 
 **Fee Structure**:
-• **You receive**: 90% of user payment
-• **Network fee**: 10% to protocol treasury
+• **You receive**: 88% of user payment
+• **Network fee**: 12% to protocol treasury
 • **Gas costs**: ~$0.005 per proof submission (Base L2)
 
 **When Do I Get Paid?**
@@ -1202,7 +1202,7 @@ If user claims incorrect processing:
 • 💰 Cheap (gas fees <$0.01 per transaction)
 • 🛡️ Secure (cryptographic proofs + slashing for fraud)
 
-Unlike traditional platforms that take 30-90 days to pay and charge 20-40% fees, Platformless AI settles **immediately** with only a 10% network fee.`,
+Unlike traditional platforms that take 30-90 days to pay and charge 20-40% fees, Platformless AI settles **immediately** with only a 12% network fee.`,
   },
   {
     id: "hosting-6",
@@ -1348,7 +1348,7 @@ This is the underrated one. Serving a client's finished adapter back on an infer
 
 **How You Get Paid**
 
-Exactly as you do for inference. Fine-tuning rides the same session-job machinery: the same escrow, per-slice proof submission, dispute window and 90/10 split, under its own registered model id and your registered price per token. A run that fails midway pays you for the slices you actually completed.
+Exactly as you do for inference. Fine-tuning rides the same session-job machinery: the same escrow, per-slice proof submission, dispute window and 88/12 split, under its own registered model id and your registered price per token. A run that fails midway pays you for the slices you actually completed.
 
 **Your Obligations**
 

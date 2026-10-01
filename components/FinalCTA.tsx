@@ -27,7 +27,7 @@ export function FinalCTA({ onJoinWaitlist }: FinalCTAProps) {
           <span className="text-gradient">Become platformless.</span>
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-neutrals-copy-light">
-          Use AI without handing your data to a platform, host models and keep 90% of what you earn,
+          Use AI without handing your data to a platform, host models and keep 88% of what you earn,
           or build your product on infrastructure no single company can switch off.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
