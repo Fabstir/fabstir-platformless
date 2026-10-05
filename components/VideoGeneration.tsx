@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import {
   Archive,
   ArrowRightLeft,
+  Box,
   Camera,
   CloudRain,
   Expand,
@@ -19,6 +21,7 @@ import {
   PenLine,
   Receipt,
   ScanSearch,
+  Scissors,
   Sparkles,
   SunDim,
   Type,
@@ -28,6 +31,7 @@ import {
 import { SectionHeader } from '@/components/SectionHeader';
 import { VideoPlayer, type VideoChapter } from '@/components/VideoPlayer';
 import { CompareSlider } from '@/components/CompareSlider';
+import { LoopingClips } from '@/components/LoopingClips';
 import { cn } from '@/lib/utils';
 
 const IMG = '/images/video-modes';
@@ -43,8 +47,27 @@ const blenderChapters: VideoChapter[] = [
   { time: 90, label: 'Ingredients (reference sheet)', thumbnail: `${IMG}/ingredients.webp` },
 ];
 
+// The LTX licences require AI-generated footage that could pass as real to be labelled as such.
+const disclosures = {
+  layout:
+    "AI-generated footage. Rendered with Platformless AI's Layout to Render mode from a grey 3D playblast and one look picture. Powered by LTX.",
+  cutout:
+    "AI-generated footage (LTX 2.3). Subject cut out with Platformless AI's Cut-out (Alpha) mode. Powered by LTX.",
+};
+
+interface Comparison {
+  id: string;
+  label: string;
+  caption: string;
+  before: { src: string; alt: string; label: string };
+  after: { src: string; alt: string; label: string };
+  /** Set for the LTX 2.5 modes, which enter paid service with the next release. */
+  upcoming?: boolean;
+  disclosure?: string;
+}
+
 // The first entry is the tab shown on load.
-const comparisons = [
+const comparisons: Comparison[] = [
   {
     id: 'edit',
     label: 'Edit',
@@ -73,6 +96,52 @@ const comparisons = [
     before: { src: `${IMG}/night-before.webp`, alt: 'A living room in warm afternoon daylight', label: 'Day' },
     after: { src: `${IMG}/night-after.webp`, alt: 'The same living room at night, lit by lamps', label: 'Night' },
   },
+  {
+    id: 'layout',
+    label: 'Layout to Render',
+    caption: 'Block the shot in 3D, add one picture for the look, and get a finished take with your camera move and placement kept.',
+    before: { src: `${IMG}/layout-before.webp`, alt: 'A grey 3D playblast of a street blocked out with plain boxes, lamp posts and a fountain', label: 'Grey playblast' },
+    after: { src: `${IMG}/layout-after.webp`, alt: 'The same frame rendered as a wet cobbled street at night, with lit shop windows, a parked car and a man walking', label: 'Rendered' },
+    upcoming: true,
+    disclosure: disclosures.layout,
+  },
+  {
+    id: 'cutout',
+    label: 'Cut-out',
+    caption: 'Lift the subject out of any clip with real transparency: no green screen, no mask, no prompt.',
+    before: { src: `${IMG}/cutout-before.webp`, alt: 'A bearded man in a dark hoodie standing on a city street', label: 'Source clip' },
+    after: { src: `${IMG}/cutout-after.webp`, alt: 'The same man cut out, with the street replaced by a transparency checkerboard', label: 'Cut out' },
+    upcoming: true,
+    disclosure: disclosures.cutout,
+  },
+];
+
+// Both clips of each pair are the same length and frame rate, so they play in step.
+const newModes = [
+  {
+    icon: Box,
+    name: 'Layout to Render',
+    body: "Block the shot in 3D: camera move, placement, timing. The Blender extension renders a grey playblast from a temporary copy of your scene, you add one picture that sets the look, and the finished shot keeps the playblast's camera path and object placement.",
+    specs: ['Up to 15 seconds', 'Up to 1920×1088', '24 or 25 fps'],
+    clips: [{ src: '/videos/layout-to-render.mp4', poster: `${IMG}/layout-poster.webp` }],
+    labels: ['Grey playblast', 'Rendered'],
+    title: 'Layout to Render: a grey 3D playblast beside the finished render, following the same camera move',
+    look: { src: `${IMG}/layout-look.webp`, alt: "The look picture: a styled version of the playblast's first frame, a wet cobbled street at night" },
+    disclosure: disclosures.layout,
+  },
+  {
+    icon: Scissors,
+    name: 'Cut-out (Alpha)',
+    body: "Select one clip and the subject comes back with real transparency and its matte, frame-aligned. The model returns only the matte, and the cut-out is composited on your own machine from your own footage, so its colour is your clip's, never a model re-render.",
+    specs: ['5 or 6 seconds', 'Up to 1920×1088', '16-bit RGBA frames', 'Linear matte EXR'],
+    clips: [
+      { src: '/videos/cutout-source.mp4', poster: `${IMG}/cutout-source-poster.webp` },
+      { src: '/videos/cutout-checkerboard.mp4', poster: `${IMG}/cutout-checkerboard-poster.webp` },
+    ],
+    labels: ['Source clip', 'Cut out'],
+    title: 'Cut-out: the source clip beside the subject cut out from it',
+    disclosure: disclosures.cutout,
+  },
 ];
 
 interface Mode {
@@ -81,7 +150,7 @@ interface Mode {
   body: string;
 }
 
-const modeGroups: { title: string; note: string; modes: Mode[] }[] = [
+const modeGroups: { title: string; note: string; modes: Mode[]; upcoming?: boolean }[] = [
   {
     title: 'Generate',
     note: 'From a prompt or your own stills',
@@ -111,6 +180,15 @@ const modeGroups: { title: string; note: string; modes: Mode[] }[] = [
       { icon: Moon, name: 'Day to night', body: 'Turn a daylight clip into night, lighting and all.' },
       { icon: Camera, name: 'Cross-view', body: 'Re-render the scene from a camera position the original never had.' },
       { icon: SunDim, name: 'SDR to HDR', body: 'Reconstruct HDR, delivered scene-linear for grading.' },
+    ],
+  },
+  {
+    title: 'New on LTX 2.5',
+    note: 'Arriving with the next release',
+    upcoming: true,
+    modes: [
+      { icon: Box, name: 'Layout to Render', body: 'A grey 3D playblast plus one look picture becomes a finished shot, camera move kept.' },
+      { icon: Scissors, name: 'Cut-out (Alpha)', body: 'The subject of any clip with real transparency. No green screen, mask or prompt.' },
     ],
   },
 ];
@@ -174,7 +252,7 @@ export function VideoGeneration() {
             </>
           }
           title="Direct AI video from your timeline"
-          description="Thirteen LTX 2.3 generation modes run on independent GPU hosts. Each clip is paid for individually and bound to a provenance record that your own client checks. Drive them from the SDK, the web app, or straight from Blender's Video Sequence Editor."
+          description="Thirteen LTX 2.3 generation modes run on independent GPU hosts, and the next release adds Layout to Render and Cut-out on LTX 2.5. Each clip is paid for individually and bound to a provenance record that your own client checks. Drive them from the SDK, the web app, or straight from Blender's Video Sequence Editor."
         />
 
         {/* Blender extension demo */}
@@ -208,7 +286,8 @@ export function VideoGeneration() {
             <p className="text-neutrals-copy-light leading-relaxed">
               The guided modes take a clip you already have. The node derives the control
               geometry from it inside the graph, so you never prepare depth passes or masks.
-              Drag the handle to compare real frames from the demo above.
+              Drag the handle to compare real frames from the demo above, or from the new
+              LTX 2.5 clips below.
             </p>
             <div role="tablist" aria-label="Before and after examples" className="flex flex-wrap gap-2">
               {comparisons.map((c) => (
@@ -226,6 +305,11 @@ export function VideoGeneration() {
                   )}
                 >
                   {c.label}
+                  {c.upcoming && (
+                    <span className="ml-1.5 rounded-full bg-primary/25 px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide text-primary-light">
+                      New
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -238,7 +322,14 @@ export function VideoGeneration() {
                 exit={{ opacity: 0 }}
               >
                 <ArrowRightLeft className="h-4 w-4 mt-0.5 shrink-0 text-secondary-light" />
-                {comparison.caption}
+                <span>
+                  {comparison.caption}
+                  {comparison.upcoming && (
+                    <span className="mt-1 block text-xs text-secondary-light">
+                      LTX 2.5, arriving with the next release
+                    </span>
+                  )}
+                </span>
               </motion.p>
             </AnimatePresence>
           </motion.div>
@@ -251,15 +342,78 @@ export function VideoGeneration() {
             transition={{ duration: 0.6 }}
           >
             <CompareSlider key={comparison.id} before={comparison.before} after={comparison.after} />
+            {comparison.disclosure && (
+              <p className="mt-2 text-xs text-neutrals-copy">{comparison.disclosure}</p>
+            )}
           </motion.div>
         </div>
 
-        {/* All thirteen modes */}
+        {/* The two LTX 2.5 modes, in motion */}
         <div className="space-y-6">
           <div className="text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Thirteen modes, one set of rails</h3>
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary-light">
+              <Sparkles className="h-3.5 w-3.5" /> New on LTX 2.5
+            </span>
+            <h3 className="mt-4 text-2xl sm:text-3xl font-bold text-foreground">Two new modes for film work</h3>
+            <p className="mx-auto mt-2 max-w-3xl text-neutrals-copy">
+              Built and validated on the production host in October 2026, and run unquantised in bf16 as a
+              quality-first choice. Both enter paid service with the next release, driven from the Blender
+              timeline like the other thirteen.
+            </p>
+          </div>
+          {newModes.map((mode) => (
+            <motion.figure
+              key={mode.name}
+              className="overflow-hidden rounded-2xl border border-primary/30 bg-card/60 backdrop-blur"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.6 }}
+            >
+              <LoopingClips clips={mode.clips} labels={mode.labels} aspectRatio={1920 / 544} title={mode.title} />
+              <div className="grid gap-6 p-5 sm:p-6 md:grid-cols-[1fr_auto] md:items-start">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary/15 text-secondary-light">
+                      <mode.icon className="h-4 w-4" />
+                    </span>
+                    <h4 className="text-lg font-semibold text-foreground">{mode.name}</h4>
+                  </div>
+                  <p className="max-w-3xl text-neutrals-copy-light leading-relaxed">{mode.body}</p>
+                  <ul className="flex flex-wrap gap-2">
+                    {mode.specs.map((spec) => (
+                      <li
+                        key={spec}
+                        className="rounded-full border border-neutrals-border/60 px-3 py-1 text-xs text-neutrals-copy"
+                      >
+                        {spec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {mode.look && (
+                  <div className="md:w-56">
+                    <div className="relative aspect-video overflow-hidden rounded-lg border border-neutrals-border/60">
+                      <Image src={mode.look.src} alt={mode.look.alt} fill sizes="224px" className="object-cover" />
+                    </div>
+                    <p className="mt-2 text-xs text-neutrals-copy">The one look picture this shot was given</p>
+                  </div>
+                )}
+              </div>
+              <figcaption className="border-t border-neutrals-border/40 px-5 py-3 text-xs text-neutrals-copy sm:px-6">
+                {mode.disclosure}
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
+
+        {/* All fifteen modes */}
+        <div className="space-y-6">
+          <div className="text-center">
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Fifteen modes, one set of rails</h3>
             <p className="mt-2 text-neutrals-copy">
-              Each mode has its own pinned template and on-chain model id. All of them settle through the same escrow.
+              Thirteen are live today and two arrive with the next release. Each mode has its own pinned
+              template and on-chain model id, and all of them settle through the same escrow.
             </p>
           </div>
           <div className="grid gap-5 lg:grid-cols-4">
@@ -269,7 +423,8 @@ export function VideoGeneration() {
                 className={cn(
                   'rounded-2xl border border-neutrals-border/60 bg-card/60 p-5 backdrop-blur',
                   groupIndex === 0 && 'lg:col-span-3',
-                  groupIndex === 2 && 'lg:col-span-4'
+                  groupIndex >= 2 && 'lg:col-span-4',
+                  group.upcoming && 'border-primary/40'
                 )}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -278,7 +433,9 @@ export function VideoGeneration() {
               >
                 <div className="mb-4 flex items-baseline justify-between gap-3">
                   <h4 className="font-semibold text-primary-content">{group.title}</h4>
-                  <span className="text-xs text-neutrals-copy">{group.note}</span>
+                  <span className={cn('text-xs', group.upcoming ? 'text-secondary-light' : 'text-neutrals-copy')}>
+                    {group.note}
+                  </span>
                 </div>
                 <ul className={cn('grid gap-3', group.modes.length > 1 && 'sm:grid-cols-2 lg:grid-cols-3')}>
                   {group.modes.map((mode) => (
