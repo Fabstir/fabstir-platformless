@@ -12,6 +12,7 @@ import { VideoGeneration } from '@/components/VideoGeneration';
 import { AgenticAI } from '@/components/AgenticAI';
 import { Orchestration } from '@/components/Orchestration';
 import { Training } from '@/components/Training';
+import { KnowledgeGraphs } from '@/components/KnowledgeGraphs';
 import { Streaming } from '@/components/Streaming';
 import { Security } from '@/components/Security';
 import { Hosts } from '@/components/Hosts';
@@ -41,6 +42,7 @@ export default function Home() {
       <AgenticAI />
       <Orchestration />
       <Training />
+      <KnowledgeGraphs />
       <Streaming />
       <Hosts onJoinWaitlist={openWaitlist} />
       <Architecture />

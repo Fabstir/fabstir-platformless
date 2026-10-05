@@ -15,6 +15,7 @@ import {
   Sparkles,
   Terminal,
   Tv,
+  Waypoints,
 } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { SpotlightCard } from '@/components/SpotlightCard';
@@ -65,22 +66,32 @@ const capabilities: Capability[] = [
     body: 'FLUX.2 diffusion on host GPUs, reachable through the standard OpenAI images endpoint. Your prompt never passes through a platform.',
   },
   {
+    icon: Sparkles,
+    title: 'Private fine-tuning',
+    body: 'Train a LoRA adapter on your own encrypted dataset and pay only for the slices of training that actually complete.',
+    tag: 'New',
+    href: '#fine-tuning',
+    className: 'lg:col-span-2',
+  },
+  {
     icon: Tv,
     title: 'Transcoding and streaming',
     body: 'H.264, HEVC and AV1 on NVENC, plus HLS streaming where the free preview is public and every paid segment stays encrypted.',
     href: '#streaming',
   },
   {
-    icon: Sparkles,
-    title: 'Private fine-tuning',
-    body: 'Train a LoRA adapter on your own encrypted dataset and pay only for the slices of training that actually complete.',
-    tag: 'New',
-    href: '#fine-tuning',
-  },
-  {
     icon: BookOpenText,
     title: 'Knowledge and tools',
     body: 'Retrieval over your own documents with host-side embeddings, web search, vision with Florence-2, and OCR, all inside an encrypted session.',
+  },
+  {
+    icon: Waypoints,
+    title: 'Knowledge graphs',
+    body: 'Map how your documents connect, across collections, then let chat follow the links when it answers. Built in your browser, sealed with your key, and free to build.',
+    tag: 'New',
+    href: '#knowledge-graphs',
+    className: 'sm:col-span-2',
+    image: '/images/knowledge-graphs/graph-card.webp',
   },
   {
     icon: Cpu,

@@ -16,6 +16,7 @@ const navItems = [
   { href: '#video', label: 'AI Video' },
   { href: '#agents', label: 'Agents' },
   { href: '#fine-tuning', label: 'Fine-Tuning' },
+  { href: '#knowledge-graphs', label: 'Knowledge Graphs' },
   { href: '#hosts', label: 'Hosts' },
   { href: '#faq', label: 'FAQ' },
 ];
@@ -63,7 +64,7 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                'whitespace-nowrap rounded-md px-3 py-1.5 text-sm transition-colors',
+                'whitespace-nowrap rounded-md px-2 py-1.5 text-sm transition-colors',
                 activeId === item.href.slice(1)
                   ? 'bg-primary/15 text-foreground'
                   : 'text-neutrals-copy hover:text-foreground'
