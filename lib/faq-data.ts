@@ -410,7 +410,7 @@ Resolutions up to **1440p** have been validated, with clips generated and paymen
 **Provenance & Billing**
 
 • **Pinned-template provenance** — generations use pinned workflow templates with byte-exact binding of the input image, so each output is verifiably tied to its inputs.
-• **Megapixel-frame billing** — you pay for what you render, roughly **$0.04 for an SD 5-second clip up to ~$0.91 for 4K**, with the standard 88/12 host/network split settled automatically.
+• **Megapixel-frame billing** — you pay for what you render, from about **$0.12 for an SD 5-second clip up to $2.50 for 4K** ($0.50 a second), with the standard 88/12 host/network split settled automatically.
 
 **AI Video Inside Blender**
 

@@ -193,12 +193,13 @@ const modeGroups: { title: string; note: string; modes: Mode[]; upcoming?: boole
   },
 ];
 
-// Current test pricing for a 5-second clip (whitepaper 4.7, Billing).
+// A 5-second clip (121 frames at 24 fps). 4K is set at $2.50, $0.50 a second; the other rows scale by
+// frames × width × height, as billing does (SD is 768×512, 1440p sits between 2560×1408 and 2560×1440).
 const clipPrices = [
-  { resolution: 'SD', price: 0.04 },
-  { resolution: '1080p', price: 0.23 },
-  { resolution: '1440p', price: 0.4 },
-  { resolution: '4K', price: 0.91 },
+  { resolution: 'SD', price: 0.12 },
+  { resolution: '1080p', price: 0.63 },
+  { resolution: '1440p', price: 1.1 },
+  { resolution: '4K', price: 2.5 },
 ];
 const maxPrice = Math.max(...clipPrices.map((p) => p.price));
 
@@ -490,7 +491,7 @@ export function VideoGeneration() {
           >
             <figcaption>
               <h4 className="font-semibold text-foreground">What a 5-second clip costs</h4>
-              <p className="text-xs text-neutrals-copy">Current test pricing, in USD</p>
+              <p className="text-xs text-neutrals-copy">In USD, at 24 fps</p>
             </figcaption>
             <ul className="mt-6 space-y-4">
               {clipPrices.map((row, i) => (
@@ -511,8 +512,8 @@ export function VideoGeneration() {
               ))}
             </ul>
             <p className="mt-6 text-xs text-neutrals-copy leading-relaxed">
-              Cost scales with frames × width × height. 88% goes to the host and 12% to the
-              protocol treasury.
+              Cost scales with frames × width × height, so 4K works out at $0.50 a second. 88%
+              goes to the host and 12% to the protocol treasury.
             </p>
           </motion.figure>
         </div>
