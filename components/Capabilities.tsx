@@ -35,7 +35,7 @@ const capabilities: Capability[] = [
   {
     icon: Clapperboard,
     title: 'AI video generation',
-    body: 'Thirteen LTX 2.3 modes, from text-to-video to restyle, outpaint and SDR-to-HDR. SD to 4K, priced per clip, with provenance your own client verifies. Now driven from inside Blender.',
+    body: 'Sixteen modes on LTX 2.3, LTX 2.5 and NVIDIA Cosmos, from text-to-video and restyle to cut-out, layout to render and relighting passes. SD to 4K, priced per clip, with provenance your own client verifies, all driven from inside Blender.',
     tag: 'New',
     href: '#video',
     className: 'lg:col-span-2',

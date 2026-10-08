@@ -31,7 +31,7 @@ const milestones: { phase: string; title: string; status: Status; statusLabel?: 
     phase: 'Phase 4',
     title: 'Advanced features',
     status: 'done',
-    items: 'RAG, web search, vision, FLUX.2 images, STARK proofs, NVENC transcoding, HLS streaming, and 13-mode LTX 2.3 video inside Blender.',
+    items: 'RAG, web search, vision, FLUX.2 images, STARK proofs, NVENC transcoding, HLS streaming, and 16-mode AI video inside Blender, on LTX 2.3, LTX 2.5 and NVIDIA Cosmos.',
   },
   {
     phase: 'Phase 5',

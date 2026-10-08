@@ -24,6 +24,7 @@ import {
   Scissors,
   Sparkles,
   SunDim,
+  SunMedium,
   Type,
   Wand2,
   ZoomIn,
@@ -32,6 +33,7 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { VideoPlayer, type VideoChapter } from '@/components/VideoPlayer';
 import { CompareSlider } from '@/components/CompareSlider';
 import { LoopingClips } from '@/components/LoopingClips';
+import RelightShowcase from '@/components/RelightShowcase';
 import { cn } from '@/lib/utils';
 
 const IMG = '/images/video-modes';
@@ -61,8 +63,8 @@ interface Comparison {
   caption: string;
   before: { src: string; alt: string; label: string };
   after: { src: string; alt: string; label: string };
-  /** Set for the LTX 2.5 modes, which enter paid service with the next release. */
-  upcoming?: boolean;
+  /** Set for the LTX 2.5 modes, new in the latest release. */
+  isNew?: boolean;
   disclosure?: string;
 }
 
@@ -102,7 +104,7 @@ const comparisons: Comparison[] = [
     caption: 'Block the shot in 3D, add one picture for the look, and get a finished take with your camera move and placement kept.',
     before: { src: `${IMG}/layout-before.webp`, alt: 'A grey 3D playblast of a street blocked out with plain boxes, lamp posts and a fountain', label: 'Grey playblast' },
     after: { src: `${IMG}/layout-after.webp`, alt: 'The same frame rendered as a wet cobbled street at night, with lit shop windows, a parked car and a man walking', label: 'Rendered' },
-    upcoming: true,
+    isNew: true,
     disclosure: disclosures.layout,
   },
   {
@@ -111,7 +113,7 @@ const comparisons: Comparison[] = [
     caption: 'Lift the subject out of any clip with real transparency: no green screen, no mask, no prompt.',
     before: { src: `${IMG}/cutout-before.webp`, alt: 'A bearded man in a dark hoodie standing on a city street', label: 'Source clip' },
     after: { src: `${IMG}/cutout-after.webp`, alt: 'The same man cut out, with the street replaced by a transparency checkerboard', label: 'Cut out' },
-    upcoming: true,
+    isNew: true,
     disclosure: disclosures.cutout,
   },
 ];
@@ -150,7 +152,7 @@ interface Mode {
   body: string;
 }
 
-const modeGroups: { title: string; note: string; modes: Mode[]; upcoming?: boolean }[] = [
+const modeGroups: { title: string; note: string; modes: Mode[]; isNew?: boolean }[] = [
   {
     title: 'Generate',
     note: 'From a prompt or your own stills',
@@ -183,12 +185,13 @@ const modeGroups: { title: string; note: string; modes: Mode[]; upcoming?: boole
     ],
   },
   {
-    title: 'New on LTX 2.5',
-    note: 'Arriving with the next release',
-    upcoming: true,
+    title: 'New for film work',
+    note: 'LTX 2.5 and NVIDIA Cosmos',
+    isNew: true,
     modes: [
       { icon: Box, name: 'Layout to Render', body: 'A grey 3D playblast plus one look picture becomes a finished shot, camera move kept.' },
       { icon: Scissors, name: 'Cut-out (Alpha)', body: 'The subject of any clip with real transparency. No green screen, mask or prompt.' },
+      { icon: SunMedium, name: 'VFX Passes', body: 'Geometry and material passes from your live-action footage, up to five as EXR, then relight it in Blender. Built on NVIDIA Cosmos.' },
     ],
   },
 ];
@@ -253,7 +256,7 @@ export function VideoGeneration() {
             </>
           }
           title="Direct AI video from your timeline"
-          description="Thirteen LTX 2.3 generation modes run on independent GPU hosts, and the next release adds Layout to Render and Cut-out on LTX 2.5. Each clip is paid for individually and bound to a provenance record that your own client checks. Drive them from the SDK, the web app, or straight from Blender's Video Sequence Editor."
+          description="Sixteen modes on LTX 2.3, LTX 2.5 and NVIDIA Cosmos run on independent GPU hosts. Each clip is paid for individually and bound to a provenance record that your own client checks. Drive them from the SDK, the web app, or straight from Blender's Video Sequence Editor."
         />
 
         {/* Blender extension demo */}
@@ -306,7 +309,7 @@ export function VideoGeneration() {
                   )}
                 >
                   {c.label}
-                  {c.upcoming && (
+                  {c.isNew && (
                     <span className="ml-1.5 rounded-full bg-primary/25 px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide text-primary-light">
                       New
                     </span>
@@ -325,10 +328,8 @@ export function VideoGeneration() {
                 <ArrowRightLeft className="h-4 w-4 mt-0.5 shrink-0 text-secondary-light" />
                 <span>
                   {comparison.caption}
-                  {comparison.upcoming && (
-                    <span className="mt-1 block text-xs text-secondary-light">
-                      LTX 2.5, arriving with the next release
-                    </span>
+                  {comparison.isNew && (
+                    <span className="mt-1 block text-xs text-secondary-light">New on LTX 2.5</span>
                   )}
                 </span>
               </motion.p>
@@ -357,9 +358,8 @@ export function VideoGeneration() {
             </span>
             <h3 className="mt-4 text-2xl sm:text-3xl font-bold text-foreground">Two new modes for film work</h3>
             <p className="mx-auto mt-2 max-w-3xl text-neutrals-copy">
-              Built and validated on the production host in October 2026, and run unquantised in bf16 as a
-              quality-first choice. Both enter paid service with the next release, driven from the Blender
-              timeline like the other thirteen.
+              Both run unquantised in bf16, a quality-first choice for film work, and both are now live,
+              driven from the Blender timeline like every other mode.
             </p>
           </div>
           {newModes.map((mode) => (
@@ -408,13 +408,22 @@ export function VideoGeneration() {
           ))}
         </div>
 
-        {/* All fifteen modes */}
+        {/* VFX Passes relighting real footage (the developer's component, kept as delivered) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <RelightShowcase />
+        </motion.div>
+
+        {/* All sixteen modes */}
         <div className="space-y-6">
           <div className="text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Fifteen modes, one set of rails</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Sixteen modes, one set of rails</h3>
             <p className="mt-2 text-neutrals-copy">
-              Thirteen are live today and two arrive with the next release. Each mode has its own pinned
-              template and on-chain model id, and all of them settle through the same escrow.
+              Each mode has its own pinned template and on-chain model id. All of them settle through the same escrow.
             </p>
           </div>
           <div className="grid gap-5 lg:grid-cols-4">
@@ -425,7 +434,7 @@ export function VideoGeneration() {
                   'rounded-2xl border border-neutrals-border/60 bg-card/60 p-5 backdrop-blur',
                   groupIndex === 0 && 'lg:col-span-3',
                   groupIndex >= 2 && 'lg:col-span-4',
-                  group.upcoming && 'border-primary/40'
+                  group.isNew && 'border-primary/40'
                 )}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -434,7 +443,7 @@ export function VideoGeneration() {
               >
                 <div className="mb-4 flex items-baseline justify-between gap-3">
                   <h4 className="font-semibold text-primary-content">{group.title}</h4>
-                  <span className={cn('text-xs', group.upcoming ? 'text-secondary-light' : 'text-neutrals-copy')}>
+                  <span className={cn('text-xs', group.isNew ? 'text-secondary-light' : 'text-neutrals-copy')}>
                     {group.note}
                   </span>
                 </div>
