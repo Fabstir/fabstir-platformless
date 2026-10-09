@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import {
   CheckCircle2,
@@ -202,16 +202,19 @@ export function Security() {
                           )}
                         </div>
                         <p className="text-sm text-neutrals-copy">{layer.summary}</p>
-                        {layer.id === active.id && (
-                          <motion.p
-                            className="mt-2 text-sm leading-relaxed text-neutrals-copy-light"
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            transition={{ duration: 0.25 }}
-                          >
-                            {layer.detail}
-                          </motion.p>
-                        )}
+                        {/* The default layer renders already open, so the page does not grow after hydration */}
+                        <AnimatePresence initial={false}>
+                          {layer.id === active.id && (
+                            <motion.p
+                              className="mt-2 text-sm leading-relaxed text-neutrals-copy-light"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              transition={{ duration: 0.25 }}
+                            >
+                              {layer.detail}
+                            </motion.p>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
                   </button>

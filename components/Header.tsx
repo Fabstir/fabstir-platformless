@@ -44,6 +44,19 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
+  // Smooth-scroll the in-page links, but only once the page has loaded. On a deep link such as
+  // /#video the browser's initial jump would otherwise be animated, and framer-motion's measurement
+  // pass (a window.scrollTo to the current position) cancels it a few hundred pixels down the page.
+  useEffect(() => {
+    const enable = () => document.documentElement.classList.add('scroll-smooth');
+    if (document.readyState === 'complete') {
+      enable();
+      return;
+    }
+    window.addEventListener('load', enable, { once: true });
+    return () => window.removeEventListener('load', enable);
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-neutrals-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between max-w-7xl mx-auto px-4">
