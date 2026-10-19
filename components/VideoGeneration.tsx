@@ -256,7 +256,7 @@ export function VideoGeneration() {
             </>
           }
           title="Direct AI video from your timeline"
-          description="Sixteen modes on LTX 2.3, LTX 2.5 and NVIDIA Cosmos run on independent GPU hosts. Each clip is paid for individually and bound to a provenance record that your own client checks. Drive them from the SDK, the web app, or straight from Blender's Video Sequence Editor."
+          description="Twenty-four modes on LTX 2.3, LTX 2.5 and NVIDIA Cosmos run on independent GPU hosts. Each clip is paid for individually and bound to a provenance record that your own client checks. Drive them from the SDK, the web app, or straight from Blender's Video Sequence Editor."
         />
 
         {/* Blender extension demo */}
@@ -418,12 +418,16 @@ export function VideoGeneration() {
           <RelightShowcase />
         </motion.div>
 
-        {/* All sixteen modes */}
+        {/* All twenty-four modes: sixteen as cards, the rest named in one line */}
         <div className="space-y-6">
           <div className="text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Sixteen modes, one set of rails</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Twenty-four modes, one set of rails</h3>
             <p className="mt-2 text-neutrals-copy">
               Each mode has its own pinned template and on-chain model id. All of them settle through the same escrow.
+            </p>
+            <p className="mx-auto mt-2 max-w-3xl text-sm text-neutrals-copy">
+              Sixteen are shown below. Also live: Colorize, Deblur, Fix Compression, Refine Details up to 4K,
+              Restore (LTX 2.5), Restore with reference, Clean Plate and Slow Motion.
             </p>
           </div>
           <div className="grid gap-5 lg:grid-cols-4">
