@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // The Blender extension's own site
-      { source: '/blender', destination: 'https://timeline.platformlessai.org', permanent: true },
+      // The Blender extension's own site, keeping the rest of the path (/blender itself matches too)
+      { source: '/blender/:path*', destination: 'https://timeline.platformlessai.org/:path*', permanent: true },
     ];
   },
 };
