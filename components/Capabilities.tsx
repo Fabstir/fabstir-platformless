@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { SpotlightCard } from '@/components/SpotlightCard';
+import { BLENDER_SIGN_UP_URL } from '@/lib/links';
 import { cn } from '@/lib/utils';
 
 interface Capability {
@@ -27,6 +28,8 @@ interface Capability {
   body: string;
   tag?: string;
   href?: string;
+  /** A second link, to another site. The card then shows two links instead of being one. */
+  cta?: { label: string; href: string };
   className?: string;
   image?: string;
 }
@@ -38,6 +41,7 @@ const capabilities: Capability[] = [
     body: 'Twenty-four modes on LTX 2.3, LTX 2.5 and NVIDIA Cosmos, from text-to-video and restyle to cut-out, layout to render and relighting passes. SD to 4K, priced per clip, with provenance your own client verifies, all driven from inside Blender.',
     tag: 'New',
     href: '#video',
+    cta: { label: 'Sign up for the Blender release', href: BLENDER_SIGN_UP_URL },
     className: 'lg:col-span-2',
     image: '/images/video-modes/ingredients.webp',
   },
@@ -114,6 +118,9 @@ const tagStyles: Record<string, string> = {
   'Proven on hardware': 'bg-success/15 text-success border-success/40',
 };
 
+const cardLinkClass =
+  'group/link flex items-center gap-1 rounded text-primary-light transition-colors hover:text-secondary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light';
+
 export function Capabilities() {
   return (
     <section id="features" className="relative isolate py-20 px-4 overflow-hidden">
@@ -154,11 +161,23 @@ export function Capabilities() {
                   </div>
                   <h3 className="mb-2 text-lg font-bold text-foreground">{capability.title}</h3>
                   <p className="text-sm leading-relaxed text-neutrals-copy">{capability.body}</p>
-                  {capability.href && (
+                  {capability.href && !capability.cta && (
                     <span className="mt-auto flex items-center gap-1 pt-4 text-sm font-medium text-primary-light transition-colors group-hover:text-secondary-light">
                       Explore
                       <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                     </span>
+                  )}
+                  {capability.href && capability.cta && (
+                    <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-2 pt-4 text-sm font-medium">
+                      <a href={capability.href} className={cardLinkClass}>
+                        Explore
+                        <ArrowUpRight className="h-4 w-4 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+                      </a>
+                      <a href={capability.cta.href} target="_blank" rel="noopener noreferrer" className={cardLinkClass}>
+                        {capability.cta.label}
+                        <ArrowUpRight className="h-4 w-4 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+                      </a>
+                    </div>
                   )}
                 </div>
               </SpotlightCard>
@@ -173,7 +192,7 @@ export function Capabilities() {
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: (index % 3) * 0.08 }}
               >
-                {capability.href ? (
+                {capability.href && !capability.cta ? (
                   <a href={capability.href} className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light">
                     {content}
                   </a>

@@ -7,6 +7,7 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Archive,
   ArrowRightLeft,
+  ArrowUpRight,
   Box,
   Camera,
   CloudRain,
@@ -34,6 +35,7 @@ import { VideoPlayer, type VideoChapter } from '@/components/VideoPlayer';
 import { CompareSlider } from '@/components/CompareSlider';
 import { LoopingClips } from '@/components/LoopingClips';
 import RelightShowcase from '@/components/RelightShowcase';
+import { BLENDER_SIGN_UP_URL } from '@/lib/links';
 import { cn } from '@/lib/utils';
 
 const IMG = '/images/video-modes';
@@ -273,6 +275,21 @@ export function VideoGeneration() {
             chapters={blenderChapters}
             chaptersHeading="Jump to a mode"
           />
+          <div className="mt-6 flex flex-col items-center gap-4 rounded-2xl border border-primary/30 bg-card/60 p-5 text-center backdrop-blur sm:flex-row sm:justify-between sm:p-6 sm:text-left">
+            <p className="text-neutrals-copy-light">
+              <span className="font-semibold text-foreground">Platformless AI for Blender has its own preview site.</span>{' '}
+              See what the extension does, then sign up there to hear when it is released.
+            </p>
+            <a
+              href={BLENDER_SIGN_UP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-md bg-gradient-animated px-5 py-3 font-semibold text-white transition-shadow hover:shadow-lg hover:shadow-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light"
+            >
+              Sign up for the Blender release
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
         </motion.div>
 
         {/* Before / after */}

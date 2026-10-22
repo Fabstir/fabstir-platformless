@@ -77,7 +77,7 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
             Join the Waitlist
           </DialogTitle>
           <DialogDescription className="text-neutrals-copy">
-            Get early access to Platformless AI. We&apos;ll notify you when we launch in Q1 2025.
+            Get early access to Platformless AI. We&apos;ll let you know as new features go live and when mainnet launches.
           </DialogDescription>
         </DialogHeader>
 
