@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, FileText, ShieldCheck, Youtube } from 'lucide-react';
+import { Clapperboard, Github, FileText, ShieldCheck, Youtube } from 'lucide-react';
+import { BLENDER_SITE_URL } from '@/lib/links';
 
 export function Footer() {
   return (
@@ -23,6 +24,16 @@ export function Footer() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+            <Link
+              href={BLENDER_SITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-neutrals-copy hover:text-primary-light transition-colors group"
+            >
+              <Clapperboard className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span>Platformless AI for Blender</span>
+            </Link>
+
             <Link
               href="https://github.com/Fabstir"
               target="_blank"
