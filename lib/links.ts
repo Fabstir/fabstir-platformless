@@ -19,3 +19,6 @@ export const IONOS_PARTNER_LISTING_URL = 'https://cloud.ionos.co.uk/partner-netw
 export const IONOS_PARTNER_BADGE_SRC =
   'https://images-1.partnerportal.cloud.ionos.co.uk/items/837515a7-9781-4be0-abc5-b8156d31e2ea/profiles/d881ce81-caea-4bb8-bb30-320bb957d1be/badges/normal_blue';
 export const IONOS_PARTNER_BADGE_HREF = `${IONOS_PARTNER_LISTING_URL}?origin=PartnerBadge`;
+
+/** StonesThro, our UK sovereign edge cloud partner. */
+export const STONESTHRO_SITE_URL = 'https://www.stonesthro.co.uk/';
