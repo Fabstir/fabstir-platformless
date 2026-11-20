@@ -100,8 +100,9 @@ export function Partners() {
 
           <PartnerCard
             logo={
-              // Temporary: StonesThro's logo with its dark text lightened for our dark page.
-              // Replace with an official light version (ideally SVG) when StonesThro sends one.
+              // Temporary: StonesThro's official logo with its dark green recoloured white for our
+              // dark page. Replace with an official light version (ideally SVG) when StonesThro
+              // sends one.
               <Link
                 href={STONESTHRO_SITE_URL}
                 target="_blank"
@@ -111,9 +112,10 @@ export function Partners() {
                 <Image
                   src="/images/partners/stonesthro-logo-light.png"
                   alt="StonesThro"
-                  width={128}
-                  height={108}
+                  width={245}
+                  height={59}
                   unoptimized
+                  className="h-auto w-full max-w-[245px]"
                 />
               </Link>
             }
