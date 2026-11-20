@@ -18,6 +18,7 @@ const navItems = [
   { href: '#fine-tuning', label: 'Fine-Tuning' },
   { href: '#knowledge-graphs', label: 'Knowledge Graphs' },
   { href: '#hosts', label: 'Hosts' },
+  { href: '#partners', label: 'Partners' },
   { href: '#faq', label: 'FAQ' },
 ];
 
@@ -71,13 +72,13 @@ export function Header() {
           <span className="whitespace-nowrap text-xl font-bold text-foreground">Platformless AI</span>
         </Link>
 
-        <nav aria-label="Sections" className="hidden xl:flex items-center gap-1">
+        <nav aria-label="Sections" className="hidden xl:flex items-center mx-4">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
               className={cn(
-                'whitespace-nowrap rounded-md px-2 py-1.5 text-sm transition-colors',
+                'whitespace-nowrap rounded-md px-1.5 py-1.5 text-sm transition-colors',
                 activeId === item.href.slice(1)
                   ? 'bg-primary/15 text-foreground'
                   : 'text-neutrals-copy hover:text-foreground'
