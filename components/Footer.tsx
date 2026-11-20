@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { Clapperboard, Github, FileText, ShieldCheck, Youtube } from 'lucide-react';
-import { BLENDER_SITE_URL, STONESTHRO_SITE_URL } from '@/lib/links';
+import { BLENDER_SITE_URL } from '@/lib/links';
 import { IonosPartnerBadge } from '@/components/IonosPartnerBadge';
+import { StonesThroLogo } from '@/components/StonesThroLogo';
 
 export function Footer() {
   return (
@@ -26,20 +26,7 @@ export function Footer() {
             {/* Partner marks kept apart (gap) so neither reads as a combined lockup. */}
             <div className="mt-3 flex items-center justify-center gap-6 md:justify-start">
               <IonosPartnerBadge width={100} />
-              <Link
-                href={STONESTHRO_SITE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-opacity hover:opacity-80"
-              >
-                <Image
-                  src="/images/partners/stonesthro-logo-light.png"
-                  alt="StonesThro"
-                  width={120}
-                  height={29}
-                  unoptimized
-                />
-              </Link>
+              <StonesThroLogo width={120} />
             </div>
           </div>
 

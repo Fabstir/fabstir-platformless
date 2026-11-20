@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { ExternalLink, Handshake } from 'lucide-react';
 import { IonosPartnerBadge } from '@/components/IonosPartnerBadge';
 import { SectionHeader } from '@/components/SectionHeader';
+import { StonesThroLogo } from '@/components/StonesThroLogo';
 import { IONOS_PARTNER_LISTING_URL, STONESTHRO_SITE_URL } from '@/lib/links';
 
 // IONOS CLOUD Partner Program Style Guide v2 (2026-05-13): the standalone logo may only appear
@@ -99,26 +100,7 @@ export function Partners() {
           </PartnerCard>
 
           <PartnerCard
-            logo={
-              // Temporary: StonesThro's official logo with its dark green recoloured white for our
-              // dark page. Replace with an official light version (ideally SVG) when StonesThro
-              // sends one.
-              <Link
-                href={STONESTHRO_SITE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-opacity hover:opacity-80"
-              >
-                <Image
-                  src="/images/partners/stonesthro-logo-light.png"
-                  alt="StonesThro"
-                  width={245}
-                  height={59}
-                  unoptimized
-                  className="h-auto w-full max-w-[245px]"
-                />
-              </Link>
-            }
+            logo={<StonesThroLogo width={249} />}
           >
             <p className="text-lg font-semibold text-foreground">UK sovereign edge cloud</p>
             <p>
