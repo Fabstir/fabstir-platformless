@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Clapperboard, Github, FileText, ShieldCheck, Youtube } from 'lucide-react';
 import { BLENDER_SITE_URL } from '@/lib/links';
+import { IonosPartnerBadge } from '@/components/IonosPartnerBadge';
 
 export function Footer() {
   return (
@@ -21,6 +22,7 @@ export function Footer() {
                 Fabstir
               </Link>
             </p>
+            <IonosPartnerBadge width={100} className="mt-3" />
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">

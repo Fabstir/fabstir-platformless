@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, ShieldCheck } from 'lucide-react';
 import { NetworkCanvas } from '@/components/NetworkCanvas';
+import { IonosPartnerBadge } from '@/components/IonosPartnerBadge';
 
 interface HeroProps {
   onJoinWaitlist: () => void;
@@ -146,6 +147,16 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
             <Play className="h-5 w-5 fill-secondary text-secondary" />
             Watch the film
           </motion.a>
+        </motion.div>
+
+        {/* Official IONOS CLOUD Partner Portal badge; its use needs no further approval. */}
+        <motion.div
+          className="pt-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <IonosPartnerBadge width={133} />
         </motion.div>
       </div>
     </section>

@@ -16,6 +16,7 @@ import { KnowledgeGraphs } from '@/components/KnowledgeGraphs';
 import { Streaming } from '@/components/Streaming';
 import { Security } from '@/components/Security';
 import { Hosts } from '@/components/Hosts';
+import { Partners } from '@/components/Partners';
 import { FAQ } from '@/components/FAQ';
 import { Architecture } from '@/components/Architecture';
 import { Roadmap } from '@/components/Roadmap';
@@ -45,6 +46,7 @@ export default function Home() {
       <KnowledgeGraphs />
       <Streaming />
       <Hosts onJoinWaitlist={openWaitlist} />
+      <Partners />
       <Architecture />
       <Roadmap />
       <Founder />
