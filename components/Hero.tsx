@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Play, ShieldCheck } from 'lucide-react';
 import { NetworkCanvas } from '@/components/NetworkCanvas';
 import { IonosPartnerBadge } from '@/components/IonosPartnerBadge';
-import { StonesThroLogo } from '@/components/StonesThroLogo';
+import { StonesThroCertifiedBadge } from '@/components/StonesThroCertifiedBadge';
 
 interface HeroProps {
   onJoinWaitlist: () => void;
@@ -150,16 +150,16 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
           </motion.a>
         </motion.div>
 
-        {/* Official IONOS CLOUD Partner Portal badge (needs no further approval) and StonesThro's
-            official logo, kept apart by the gap so neither reads as a combined lockup. */}
+        {/* Official partner badges from IONOS CLOUD (needs no further approval) and StonesThro,
+            matched in height and kept apart by the gap so neither reads as a combined lockup. */}
         <motion.div
-          className="pt-6 flex items-center justify-center gap-8"
+          className="pt-6 flex items-center justify-center gap-6 sm:gap-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
           <IonosPartnerBadge width={133} />
-          <StonesThroLogo width={160} />
+          <StonesThroCertifiedBadge width={177} />
         </motion.div>
       </div>
     </section>

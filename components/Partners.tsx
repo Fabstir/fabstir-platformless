@@ -102,7 +102,7 @@ export function Partners() {
           <PartnerCard
             logo={<StonesThroLogo width={249} />}
           >
-            <p className="text-lg font-semibold text-foreground">UK sovereign edge cloud</p>
+            <p className="text-lg font-semibold text-foreground">Certified StonesThro partner</p>
             <p>
               StonesThro is a UK-based sovereign neutral edge cloud provider, running compute close
               to where data is generated.

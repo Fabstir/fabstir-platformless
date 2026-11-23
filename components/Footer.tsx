@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Clapperboard, Github, FileText, ShieldCheck, Youtube } from 'lucide-react';
 import { BLENDER_SITE_URL } from '@/lib/links';
 import { IonosPartnerBadge } from '@/components/IonosPartnerBadge';
-import { StonesThroLogo } from '@/components/StonesThroLogo';
+import { StonesThroCertifiedBadge } from '@/components/StonesThroCertifiedBadge';
 
 export function Footer() {
   return (
@@ -26,7 +26,7 @@ export function Footer() {
             {/* Partner marks kept apart (gap) so neither reads as a combined lockup. */}
             <div className="mt-3 flex items-center justify-center gap-6 md:justify-start">
               <IonosPartnerBadge width={100} />
-              <StonesThroLogo width={120} />
+              <StonesThroCertifiedBadge width={133} />
             </div>
           </div>
 
